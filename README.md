@@ -5,7 +5,7 @@
 
 Artur Nizamutdinov (nápad...)<br>
 Nikita Kolobov (...)<br>
-Jan Božejovský (...)<br>
+Jan Božejovský (Barometr, jazyková korektura dokumentace...)<br>
 Jakub Kováč (LCD displej, dokumentace...)<br>
 
 <h2>Teoretický popis, vysvětlení</h2>
