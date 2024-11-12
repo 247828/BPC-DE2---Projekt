@@ -2,7 +2,7 @@
 
 <item itemtype="Hd44780" CircId="Hd44780-1" mainComp="false" Show_id="true" Show_Val="false" Pos="-112,-200" rotation="0" hflip="1" vflip="1" label="Hd44780" idLabPos="70,-82" labelrot="0" valLabPos="-16,20" valLabRot="0" Rows="2" Cols="16" />
 
-<item itemtype="MCU" CircId="mega328-6" mainComp="false" Show_id="true" Show_Val="false" Pos="116,-192" rotation="0" hflip="1" vflip="1" label="atmega328" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" Frequency="16 MHz" Program="../.pio/build/uno/firmware.hex" Auto_Load="false" saveEepr="true" Logic_Symbol="false" Rst_enabled="false" Ext_Osc="false" Wdt_enabled="false" Clk_Out="false" MainMcu="true" SerialMon="-1" />
+<item itemtype="MCU" CircId="mega328-6" mainComp="false" Show_id="true" Show_Val="false" Pos="116,-192" rotation="0" hflip="1" vflip="1" label="atmega328" idLabPos="0,-20" labelrot="0" valLabPos="-16,20" valLabRot="0" Frequency="16 MHz" Program="../.pio/build/uno/firmware.hex" Auto_Load="false" saveEepr="true" Logic_Symbol="false" Rst_enabled="false" Ext_Osc="false" Wdt_enabled="false" Clk_Out="false" MainMcu="true" SerialMon="1" />
 
 <item itemtype="Ground" CircId="Ground-7" mainComp="false" Show_id="false" Show_Val="false" Pos="-88,-164" rotation="0" hflip="1" vflip="1" label="Ground-7" idLabPos="-16,8" labelrot="0" valLabPos="-16,20" valLabRot="0" />
 
