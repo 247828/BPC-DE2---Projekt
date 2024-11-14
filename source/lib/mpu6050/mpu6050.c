@@ -100,7 +100,7 @@ void mpu6050_calibrate(void) {
  *           then combines them using a complementary filter.
  * Returns:  none
  */
-void calculate_angles(void) {
+float calculate_angles(void) {
     // Apply gyroscope calibration offsets
     gyro_values[0] -= gyro_x_cal;
     gyro_values[1] -= gyro_y_cal;
@@ -122,5 +122,8 @@ void calculate_angles(void) {
         // Complementary filter
         angle_pitch = angle_pitch * 0.96 + angle_pitch_acc * 0.04;
         angle_roll = angle_roll * 0.96 + angle_roll_acc * 0.04;
+
     }
+    return angle_pitch;
 }
+

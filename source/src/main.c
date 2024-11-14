@@ -7,10 +7,17 @@
 #include <avr/interrupt.h>  // Interrupts standard C library for AVR-GCC
 #include <gpio.h>           // GPIO library for AVR-GCC
 #include "timer.h"          // Timer library for AVR-GCC
+#include "twi.h"
 #include <lcd.h>            // Peter Fleury's LCD library
 #include <uart.h>           // Peter Fleury's UART library
 #include <stdlib.h>         // C library. Needed for number conversions
 #include <math.h>           // C library fabs()
+#include "mpu6050.h"
+#include <util/delay.h> 
+
+
+#define MPU6050_ADDRESS 0x68         // I2C address of MPU6050
+
 
 // -- Global variables -- //
 // "Flags"
@@ -56,18 +63,7 @@ void updAngle() {
   }
   angle.aInt = fabs(angleFloat);
   angle.aDec = (fabs(angleFloat) - angle.aInt) * 10;
-  /*
-  uart_puts("New angle: ");
-  itoa(angle.aSign, print, 10);
-  uart_puts(print);
-  uart_putc(' ');
-  itoa(angle.aInt, print, 10);
-  uart_puts(print);
-  uart_putc(',');
-  itoa(angle.aDec, print, 10);
-  uart_puts(print);
-  uart_puts("\r\n");
-  */
+
   if (angle.aSign == 1) 
   {
     if(angle.aInt >= 10)
@@ -76,7 +72,8 @@ void updAngle() {
       lcd_putc('-');
       itoa(angle.aInt, print, 10);
       lcd_puts(print);
-      lcd_gotoxy(14, 0);
+      lcd_gotoxy(13, 0);
+      lcd_putc(',');
       itoa(angle.aDec, print, 10);
       lcd_puts(print);
     }
@@ -86,7 +83,8 @@ void updAngle() {
       lcd_puts(" -");
       itoa(angle.aInt, print, 10);
       lcd_puts(print);
-      lcd_gotoxy(14, 0);
+      lcd_gotoxy(13, 0);
+      lcd_putc(',');
       itoa(angle.aDec, print, 10);
       lcd_puts(print);
     }
@@ -99,7 +97,8 @@ void updAngle() {
       lcd_putc(' ');
       itoa(angle.aInt, print, 10);
       lcd_puts(print);
-      lcd_gotoxy(14, 0);
+      lcd_gotoxy(13, 0);
+      lcd_putc(',');
       itoa(angle.aDec, print, 10);
       lcd_puts(print);
     }
@@ -109,7 +108,8 @@ void updAngle() {
       lcd_puts("  ");
       itoa(angle.aInt, print, 10);
       lcd_puts(print);
-      lcd_gotoxy(14, 0);
+      lcd_gotoxy(13, 0);
+      lcd_putc(',');
       itoa(angle.aDec, print, 10);
       lcd_puts(print);
     }
@@ -123,24 +123,14 @@ void updAngle() {
   {
     barPosition = 0;
   }
-  /*
-  uart_puts("Bar position: ");
-  itoa(barPosition, print, 10);
-  uart_puts(print);
-  uart_puts("\r\n");
-  */
-  lcd_gotoxy(1, 0);
-  lcd_puts("   ");
+
+  lcd_gotoxy(0, 0);
+  lcd_puts("I   ");
   lcd_putc(4);
-  lcd_puts("   ");
+  lcd_puts("   I");
   if (angle.aSign == 0)
   {
     lcd_gotoxy(4+barPosition, 0);
-    /*
-    itoa(4+barPosition, print, 10);
-    uart_puts(print);
-    uart_puts("\r\n");
-    */
 
   }
   else
@@ -193,18 +183,12 @@ int main(void)
   uint8_t rightBar[8] = {0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x0};
   uint8_t center[8] = {0xa,0x0,0x0,0x0,0x0,0x0,0xa,0x0};
 
-  // Configure  Timers/Counters
-  TIM0_ovf_1ms();      // Set prescaler to 1 sec and enable overflow interrupt
-  TIM1_ovf_1sec();      // Set prescaler to 1 sec and enable overflow interrupt
-
-  // Enable overflow interrupt
-  //TIM1_ovf_enable();
-  // Interrupts must be enabled, bacause of `uart_puts()`
-  sei();
 
   // Initialize USART to asynchronous, 8-N-1, 115200 Bd
   uart_init(UART_BAUD_SELECT(115200, F_CPU));
   uart_puts("\r\nUART at 115200 Bd.\r\n");
+
+  sei();
 
   // Initialize display
   lcd_init(LCD_DISP_ON);
@@ -216,45 +200,50 @@ int main(void)
   lcd_clrscr();
   lcd_home();
   uart_puts("LCD initialized.\r\n");
-  /*
-  // Welcome screen
-  lcd_puts("PROJEKT BPC-DE2.");
-  lcd_gotoxy(0,1);
-  lcd_puts("    ArNiHoSo    ");
-  uart_puts("Welcome scr.\r\n");
-  while (calibScreen == 0)
-  {
+  
+  // Initialize TWI
+  twi_init(); 
 
-  }
-  calibScreen--;
+  // Test connection to MPU6050
+  if (twi_test_address(MPU6050_ADDRESS) != 0) {
+      uart_puts("[ERROR] MPU6050 device not detected\r\n");
+      while (1);
+  } 
+
+  // Initialize MPU6050
+  mpu6050_init();
+
+  // Calibrate MPU6050
   lcd_clrscr();
   lcd_home();
 
   // Wait for calibration to be completed screen
-  lcd_puts("POCKEJTE PROSIM,");
+  lcd_puts("  Calibration, ");
   lcd_gotoxy(0,1);
-  lcd_puts("   kalibrace.   ");
-  uart_puts("Calib. scr.\r\n");
-  while (mainScreen == 0)
-  {
+  lcd_puts("  please wait.");
 
-  }
-  mainScreen--;
+  mpu6050_calibrate();
   lcd_clrscr();
   lcd_home();
-  */
+  lcd_puts("      Done     ");
+  _delay_ms(1000);
+
+
   // Main screen
+  lcd_clrscr();
+  lcd_home();
   lcd_puts("I   ");
   lcd_putc(4);
   lcd_puts("   I -00,0");
   lcd_putc(0xDF);
   lcd_gotoxy(0,1);
   lcd_puts("          -00,0m");
-  uart_puts("Main scr.\r\n");
+  // uart_puts("Main scr.\r\n");
   
-  angleFloat = -96;
-  TIM0_ovf_enable();
-  uart_puts("Angle set 90d and TCNT0 enabled.\r\n");
+  
+  TIM1_ovf_4ms();   
+  TIM1_ovf_enable();
+
   // Infinite loop
   while (1)
   {
@@ -263,48 +252,23 @@ int main(void)
   return 0;
 }
 
-// -- Interrupt service routines --
+// -- Interrupt service routines -------------------------------------
 /*
- * Function: Timer/Counter0 overflow interrupt
- * Purpose:  Simulate angle update.
+ * Function: TIMER1_OVF_vect
+ * Purpose:  Timer overflow interrupt to read data from MPU6050
  */
-ISR(TIMER0_OVF_vect)
-{
-  static uint16_t ovfs = 0;
-  TCNT0 = 6;    // accuration for 1ms
-  ovfs++;
-  if(ovfs >= 50)
-  {
-    if (angleFloat >= 95.9) {
-      angleFloat = -95.9;
+ISR(TIMER1_OVF_vect) {
+    static uint8_t n_ovfs = 0;
+    TCNT1 = 1536;
+    n_ovfs++;
+
+    mpu6050_read_data();  // Read new data from MPU6050
+    angleFloat = calculate_angles();   // Update pitch and roll angles
+
+    // Do this every 50 x 4 ms = 200 ms
+    if (n_ovfs >= 50 && angleFloat < 100 && angleFloat > -100) {
+        updateAngle = 1;   //
+        n_ovfs = 0;        // Reset overflow counter
     }
-    else {
-      angleFloat += 0.1;
-    }
-  //uart_puts("TCNT0: 100 ms has passed.\r\n");
-  updateAngle++;
-  ovfs = 0;
-  }
 }
-// -- Interrupt service routines --
-/*
- * Function: Timer/Counter1 overflow interrupt
- * Purpose:  Simulate loading.
- */
-ISR(TIMER1_OVF_vect)
-{
-  static uint16_t ovfs = 0;
-  TCNT1 = 3036;
-  ovfs++;
-  uart_puts("TCNT1: 1 s has passed.\r\n");
-  if (ovfs == 1) 
-  {
-    calibScreen++;
-  }
-  if (ovfs == 2)
-  {
-    mainScreen++;
-    TIM1_ovf_disable();
-    ovfs = 0;
-  }
-}
+

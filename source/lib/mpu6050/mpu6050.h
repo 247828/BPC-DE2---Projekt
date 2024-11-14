@@ -46,7 +46,7 @@ void mpu6050_calibrate(void);
  * @brief Calculate pitch and roll angles based on accelerometer and gyroscope data.
  * @return void
  */
-void calculate_angles(void);
+float calculate_angles(void);
 /** @} */
 
 /**
