@@ -2,7 +2,7 @@
 
 (čeština zakomentovaná ve zdrojáku README)
 
-<h1>Inclinometer for linearray audio systems</h1>
+<h1>Arduino-Based Inclinometer for Line Array Audio Systems</h1>
 <i>Brno University of Technology, Faculty of Electrical Engineering and Communication, winter semester 2024/2025</i>
 <h2>Team members</h2>
 
