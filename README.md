@@ -12,6 +12,8 @@ Jan Božejovský (Barometr, ...)<br>
 Jakub Kováč (LCD display, Documentation...)<br>
 
 <h2>Teoretical description, inspiration</h2>
+<h2>What is an Inclinometer?</h2>
+An inclinometer, also known as a tilt sensor, is a device used to measure the angle of an object relative to the horizontal or vertical axis. It is commonly used in audio systems to ensure proper alignment of line arrays for optimized sound projection. Accurate angle measurements help achieve uniform sound dispersion across a venue.<br>
 
 <h2>Hardvare components</h2>
 
