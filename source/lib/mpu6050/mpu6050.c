@@ -7,7 +7,7 @@
 // -- Defines --------------------------------------------------------
 #define ACCEL_XOUT_H 0x3B            // Register address for X-axis accelerometer data
 #define GYRO_XOUT_H 0x43             // Register address for X-axis gyroscope data
-
+#define calibrate_time 1000
 
 // -- Global variables -----------------------------------------------
 volatile float accel_values[3] = {0};    // Accelerometer values (X, Y, Z)
@@ -15,6 +15,7 @@ volatile float gyro_values[3] = {0};     // Gyroscope values (X, Y, Z)
 volatile float angle_pitch = 0;          // Pitch angle
 volatile float angle_roll = 0;           // Roll angle
 volatile long gyro_x_cal = 0, gyro_y_cal = 0, gyro_z_cal = 0;  // Gyroscope calibration
+
 
 
 // -- Functions ------------------------------------------------------
@@ -60,9 +61,9 @@ void mpu6050_read_data(void) {
 
     // Read accelerometer values and convert to g
     twi_readfrom_mem_into(MPU6050_ADDRESS, ACCEL_XOUT_H, buffer, 6);
-    accel_values[0] = ((float)((buffer[0] << 8) | buffer[1])) / 4096 - 0.03;
-    accel_values[1] = ((float)((buffer[2] << 8) | buffer[3])) / 4096 + 0.09;
-    accel_values[2] = ((float)((buffer[4] << 8) | buffer[5])) / 4096 + 0.04;
+    accel_values[0] = ((float)((buffer[0] << 8) | buffer[1])) / 4096 - 0.07;
+    accel_values[1] = ((float)((buffer[2] << 8) | buffer[3])) / 4096 + 0.02;
+    accel_values[2] = ((float)((buffer[4] << 8) | buffer[5])) / 4096 - 0.1;
 
     // Read gyroscope values and convert to degrees per second (°/s)
     twi_readfrom_mem_into(MPU6050_ADDRESS, GYRO_XOUT_H, buffer, 6);
@@ -82,15 +83,15 @@ void mpu6050_calibrate(void) {
     gyro_y_cal = 0;
     gyro_z_cal = 0;
 
-    for (int i = 0; i < 1000; i++) {
+    for (int i = 0; i < calibrate_time; i++) {
         mpu6050_read_data();
         gyro_x_cal += gyro_values[0];
         gyro_y_cal += gyro_values[1];
         gyro_z_cal += gyro_values[2];
     }
-    gyro_x_cal /= 1000;
-    gyro_y_cal /= 1000;
-    gyro_z_cal /= 1000;
+    gyro_x_cal /= calibrate_time;
+    gyro_y_cal /= calibrate_time;
+    gyro_z_cal /= calibrate_time;
 }
 
 
@@ -124,6 +125,6 @@ float calculate_angles(void) {
         angle_roll = angle_roll * 0.96 + angle_roll_acc * 0.04;
 
     }
-    return angle_pitch;
+    return angle_roll;
 }
 

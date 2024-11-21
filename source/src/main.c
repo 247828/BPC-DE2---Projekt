@@ -13,10 +13,14 @@
 #include <stdlib.h>         // C library. Needed for number conversions
 #include <math.h>           // C library fabs()
 #include "mpu6050.h"
+#include "laser.h"          // Laser library
 #include <util/delay.h> 
 
 
 #define MPU6050_ADDRESS 0x68         // I2C address of MPU6050
+#define calibrate_time 1000
+#define LASER_PIN PB2
+#define BUTTON_PIN PD2
 
 
 // -- Global variables -- //
@@ -175,6 +179,8 @@ void updAngle() {
 
 int main(void)
 {
+  char string[8];
+
   // -- Local variables -- //
   // Custom characters
   uint8_t leftBar[8] = {0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x0};
@@ -183,6 +189,11 @@ int main(void)
   uint8_t rightBar[8] = {0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x0};
   uint8_t center[8] = {0xa,0x0,0x0,0x0,0x0,0x0,0xa,0x0};
 
+
+  // Initialize Laser and Button
+  GPIO_mode_output(&DDRB, LASER_PIN);        // Configure laser pin as output
+  GPIO_write_low(&PORTB, LASER_PIN);         // Set laser pin to LOW (laser off)
+  GPIO_mode_input_pullup(&DDRD, BUTTON_PIN); // Configure button pin as input with pull-up resistor
 
   // Initialize USART to asynchronous, 8-N-1, 115200 Bd
   uart_init(UART_BAUD_SELECT(115200, F_CPU));
@@ -204,11 +215,11 @@ int main(void)
   // Initialize TWI
   twi_init(); 
 
-  // Test connection to MPU6050
-  if (twi_test_address(MPU6050_ADDRESS) != 0) {
-      uart_puts("[ERROR] MPU6050 device not detected\r\n");
-      while (1);
-  } 
+  // // Test connection to MPU6050
+  // if (twi_test_address(MPU6050_ADDRESS) != 0) {
+  //     uart_puts("[ERROR] MPU6050 device not detected\r\n");
+  //     while (1);
+  // } 
 
   // Initialize MPU6050
   mpu6050_init();
@@ -225,7 +236,7 @@ int main(void)
   mpu6050_calibrate();
   lcd_clrscr();
   lcd_home();
-  lcd_puts("      Done     ");
+  lcd_puts("      Done.     ");
   _delay_ms(1000);
 
 
@@ -236,9 +247,13 @@ int main(void)
   lcd_putc(4);
   lcd_puts("   I -00,0");
   lcd_putc(0xDF);
-  lcd_gotoxy(0,1);
-  lcd_puts("          -00,0m");
+  // lcd_gotoxy(0,1);
+  // lcd_puts("          -00,0m");
   // uart_puts("Main scr.\r\n");
+
+  lcd_gotoxy(0,1);
+  lcd_puts("Laser OFF");
+
   
   
   TIM1_ovf_4ms();   
@@ -247,7 +262,25 @@ int main(void)
   // Infinite loop
   while (1)
   {
+    handle_button();
+    _delay_ms(50); 
+    handle_laser_timeout();
     if(updateAngle == 1) updAngle();
+
+    // uart_puts(" AccX: ");
+    // dtostrf(accel_values[0], 6, 2, string);
+    // uart_puts(string);
+    // uart_puts(" | ");
+    // uart_puts(" AccY: ");
+    // dtostrf(accel_values[1], 6, 2, string);
+    // uart_puts(string);
+    // uart_puts(" | ");
+    // uart_puts(" AccZ: ");
+    // dtostrf(accel_values[2], 6, 2, string);
+    // uart_puts(string);
+    // uart_puts(" | ");
+    // uart_puts("\r\n");
+    
   }
   return 0;
 }
@@ -259,16 +292,25 @@ int main(void)
  */
 ISR(TIMER1_OVF_vect) {
     static uint8_t n_ovfs = 0;
+    static uint16_t overflow_count = 0;
     TCNT1 = 1536;
     n_ovfs++;
+    overflow_count++;
 
     mpu6050_read_data();  // Read new data from MPU6050
     angleFloat = calculate_angles();   // Update pitch and roll angles
 
     // Do this every 50 x 4 ms = 200 ms
-    if (n_ovfs >= 50 && angleFloat < 100 && angleFloat > -100) {
+    if (n_ovfs >= 50 && angleFloat < 90 && angleFloat > -90) {
         updateAngle = 1;   //
         n_ovfs = 0;        // Reset overflow counter
     }
-}
 
+    // For laser 
+    if (overflow_count >= 25) {
+        overflow_count = 0;
+        if (laser_on) {
+            laser_timer++; 
+        }
+    }
+}
