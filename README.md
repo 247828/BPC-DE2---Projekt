@@ -26,7 +26,7 @@ Jakub Kováč (LCD display, Documentation...)<br>
 
 <h2>Hardware components</h2>
 
-Arduino Uno<br>
+<h3>Arduino Uno<h3><br>
 The main microcontroller used to read sensor data, process it, and control the output devices.<br>
 
 MPU6050 (Inclinometer)<br>
