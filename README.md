@@ -24,7 +24,6 @@ Jakub Kováč (LCD display, Documentation...)<br>
 </div>
 
 
-
 <h2>Hardvare components</h2>
 
 <h2>Software solution</h2>
