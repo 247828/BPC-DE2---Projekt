@@ -26,19 +26,19 @@ Jakub Kováč (LCD display, Documentation...)<br>
 
 <h2>Hardware components</h2>
 
-Arduino Uno<br>
+1. Arduino Uno<br>
 The main microcontroller used to read sensor data, process it, and control the output devices.<br>
 
-MPU6050 (Inclinometer)<br>
+2. MPU6050 (Inclinometer)<br>
 Measures the tilt angle of the line array with high accuracy.<br>
 
-BMP280 (Height Sensor)<br>
+3. BMP280 (Height Sensor)<br>
 Detects the elevation above the ground to ensure the line array is lifted to the correct height.<br>
 
-Laser Module<br>
+4. Laser Module<br>
 Projects a visible beam to indicate the direction for precise horizontal alignment.<br>
 
-Display Module<br>
+5. Display Module<br>
 
 <h2>Software solution</h2>
 
