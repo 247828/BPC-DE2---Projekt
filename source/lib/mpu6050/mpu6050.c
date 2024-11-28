@@ -9,6 +9,10 @@
 #define GYRO_XOUT_H 0x43             // Register address for X-axis gyroscope data
 #define calibrate_time 1000
 
+// Pins for MPU6050 on TWI0
+#define MPU6050_SDA_PIN 19
+#define MPU6050_SCL_PIN 18
+
 // -- Global variables -----------------------------------------------
 volatile float accel_values[3] = {0};    // Accelerometer values (X, Y, Z)
 volatile float gyro_values[3] = {0};     // Gyroscope values (X, Y, Z)
@@ -49,6 +53,10 @@ void mpu6050_init(void) {
     twi_stop();
 }
 
+void read_mpu6050(void) {
+    twi_set_pins(MPU6050_SDA_PIN, MPU6050_SCL_PIN); // Change pins to MPU6050
+    mpu6050_read_data();                           
+}
 
 /*
  * Function: mpu6050_read_data()
@@ -63,7 +71,7 @@ void mpu6050_read_data(void) {
     twi_readfrom_mem_into(MPU6050_ADDRESS, ACCEL_XOUT_H, buffer, 6);
     accel_values[0] = ((float)((buffer[0] << 8) | buffer[1])) / 4096 - 0.07;
     accel_values[1] = ((float)((buffer[2] << 8) | buffer[3])) / 4096 + 0.02;
-    accel_values[2] = ((float)((buffer[4] << 8) | buffer[5])) / 4096 - 0.1;
+    accel_values[2] = ((float)((buffer[4] << 8) | buffer[5])) / 4096 + 0.07;
 
     // Read gyroscope values and convert to degrees per second (°/s)
     twi_readfrom_mem_into(MPU6050_ADDRESS, GYRO_XOUT_H, buffer, 6);

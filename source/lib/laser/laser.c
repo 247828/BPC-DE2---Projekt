@@ -5,13 +5,13 @@
 
 
 #define LASER_PIN PB2
-#define BUTTON_PIN PD2
+#define BUTTON1_PIN PD2
 
 // Global variables
 volatile uint8_t laser_on = 0;       // Laser state (0 = OFF, 1 = ON)
 volatile uint8_t laser_timer = 0;    // Timer for laser timeout
 volatile uint8_t button_state = 0;   // Current button state
-volatile uint8_t last_button_state = 1; // Previous button state (active low)
+volatile uint8_t last_button_state_laser = 1; // Previous button state (active low)
 
 /*
  * Function: handle_laser_timeout
@@ -35,11 +35,11 @@ void handle_laser_timeout(void) {
  * Purpose:  Check the button state and toggle the laser on/off.
  * Returns:  none
  */
-void handle_button(void) {
-    uint8_t current_state = GPIO_read(&PIND, BUTTON_PIN); // Read the current state of the button
+void handle_button_laser(void) {
+    uint8_t current_state_laser = GPIO_read(&PIND, BUTTON1_PIN); // Read the current state of the button
 
     // Detect button press (falling edge detection)
-    if (current_state == 0 && last_button_state == 1) {
+    if (current_state_laser == 0 && last_button_state_laser == 1) {
         // Toggle the laser state
         laser_on = !laser_on;
 
@@ -58,5 +58,5 @@ void handle_button(void) {
     }
 
     // Save the current state for the next comparison
-    last_button_state = current_state;
+    last_button_state_laser = current_state_laser;
 }

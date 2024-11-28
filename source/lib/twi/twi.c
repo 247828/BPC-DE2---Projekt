@@ -156,3 +156,8 @@ void twi_readfrom_mem_into(uint8_t addr, uint8_t memaddr, volatile uint8_t *buf,
         twi_stop();
     }
 }
+
+void twi_set_pins(uint8_t sda_pin, uint8_t scl_pin) {
+    DDRC &= ~((1 << sda_pin) | (1 << scl_pin));
+    PORTC |= (1 << sda_pin) | (1 << scl_pin);
+}

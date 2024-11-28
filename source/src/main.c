@@ -15,25 +15,35 @@
 #include "mpu6050.h"
 #include "laser.h"          // Laser library
 #include <util/delay.h> 
+#include "BME280.h"
+#include <BME280.c>
 
 
 #define MPU6050_ADDRESS 0x68         // I2C address of MPU6050
 #define calibrate_time 1000
 #define LASER_PIN PB2
-#define BUTTON_PIN PD2
+#define BUTTON1_PIN PD2
+#define BME_slave 0x76
 
+// Pins for MPU6050 on TWI0
+#define MPU6050_SDA_PIN 19
+#define MPU6050_SCL_PIN 18
+
+// Pins for BME280 on TWI1 (using A4 and A5)
+#define BME280_SDA_PIN 4
+#define BME280_SCL_PIN 5
 
 // -- Global variables -- //
 // "Flags"
 volatile uint8_t updateAngle = 0;
 volatile uint8_t updateHeight = 0;
-
 volatile uint8_t calibScreen = 0;
 volatile uint8_t mainScreen = 0;
 
 char print[3]; // itoa
 
 float angleFloat = 0;
+float heightFloat = 0;
 
 struct Angle_structure {
     int8_t aInt;    // Integer part
@@ -179,7 +189,7 @@ void updAngle() {
 
 int main(void)
 {
-  char string[8];
+  
 
   // -- Local variables -- //
   // Custom characters
@@ -190,12 +200,18 @@ int main(void)
   uint8_t center[8] = {0xa,0x0,0x0,0x0,0x0,0x0,0xa,0x0};
 
 
+  // Local variables
+  char height_string[10]; // Buffer for height UART output
+  char angle_string[10];
+  // char string[8];
+
   // Initialize Laser and Button
   GPIO_mode_output(&DDRB, LASER_PIN);        // Configure laser pin as output
   GPIO_write_low(&PORTB, LASER_PIN);         // Set laser pin to LOW (laser off)
-  GPIO_mode_input_pullup(&DDRD, BUTTON_PIN); // Configure button pin as input with pull-up resistor
+  GPIO_mode_input_pullup(&DDRD, BUTTON1_PIN); // Configure button pin as input with pull-up resistor
+  GPIO_mode_input_pullup(&DDRD, BUTTON2_PIN); // Configure BME button pin as input with pull-up resistor
 
-  // Initialize USART to asynchronous, 8-N-1, 115200 Bd
+// Initialize USART to asynchronous, 8-N-1, 115200 Bd
   uart_init(UART_BAUD_SELECT(115200, F_CPU));
   uart_puts("\r\nUART at 115200 Bd.\r\n");
 
@@ -215,14 +231,44 @@ int main(void)
   // Initialize TWI
   twi_init(); 
 
-  // // Test connection to MPU6050
-  // if (twi_test_address(MPU6050_ADDRESS) != 0) {
-  //     uart_puts("[ERROR] MPU6050 device not detected\r\n");
+    // Initialize MPU6050
+  twi_set_pins(MPU6050_SDA_PIN, MPU6050_SCL_PIN);
+  mpu6050_init();
+
+  if (twi_test_address(MPU6050_ADDRESS) != 0) {
+      uart_puts("[ERROR] MPU6050 device not detected\r\n");
+      while (1);
+  } 
+
+  // Initialize BME280
+  twi_set_pins(BME280_SDA_PIN, BME280_SCL_PIN);
+  configure_bme280();
+  load_temp_calibration_data();
+  load_press_calibration_data();
+
+
+  // char uart_msg[10];
+  // uint8_t n_devices = 0; 
+
+  //    for (uint8_t sla = 8; sla < 120; sla++)
+  //   {
+  //       if (twi_test_address(sla) == 0)  // If ACK from Slave
+  //       {
+  //           sprintf(uart_msg, "\r\n0x%02x", sla);
+  //           uart_puts(uart_msg);
+  //           n_devices++;
+  //       }
+  //       // _delay_ms(1);  // !!! Just for the simulation !!!
+  //   }
+  //   sprintf(uart_msg, "\r\n%u device(s) detected\r\n", n_devices);
+  //   uart_puts(uart_msg);
+
+
+  // // Test connection to BME280
+  // if (twi_test_address(BME_slave) != 0) {
+  //     uart_puts("[ERROR] BME280 device not detected\r\n");
   //     while (1);
   // } 
-
-  // Initialize MPU6050
-  mpu6050_init();
 
   // Calibrate MPU6050
   lcd_clrscr();
@@ -254,18 +300,35 @@ int main(void)
   lcd_gotoxy(0,1);
   lcd_puts("Laser OFF");
 
-  
-  
-  TIM1_ovf_4ms();   
+  TIM1_ovf_4ms();
   TIM1_ovf_enable();
 
+  TIM2_ovf_16ms();
+  TIM2_ovf_enable();
+  
   // Infinite loop
   while (1)
   {
-    handle_button();
-    _delay_ms(50); 
+    handle_button_laser();
+    handle_button_bme();     
     handle_laser_timeout();
-    if(updateAngle == 1) updAngle();
+
+    if (updateHeight == 1){
+    // Convert height to string and send to UART
+      dtostrf(heightFloat, 6, 2, height_string);
+      uart_puts("Height: ");
+      uart_puts(height_string);
+      updateHeight = 0;
+      uart_puts(" m\r\n");
+    }
+
+    if(updateAngle == 1) {   
+      updAngle();
+    // Convert angle to string and send to UART
+      dtostrf(angleFloat, 6, 1, angle_string); 
+      uart_puts("Angle: ");
+      uart_puts(angle_string);
+      uart_puts(" m\r\n");
 
     // uart_puts(" AccX: ");
     // dtostrf(accel_values[0], 6, 2, string);
@@ -280,10 +343,14 @@ int main(void)
     // uart_puts(string);
     // uart_puts(" | ");
     // uart_puts("\r\n");
+
+        updateAngle = 0;
+      }
     
-  }
+    }
   return 0;
-}
+} 
+
 
 // -- Interrupt service routines -------------------------------------
 /*
@@ -291,26 +358,35 @@ int main(void)
  * Purpose:  Timer overflow interrupt to read data from MPU6050
  */
 ISR(TIMER1_OVF_vect) {
-    static uint8_t n_ovfs = 0;
-    static uint16_t overflow_count = 0;
+    static uint16_t n_ovfs = 0;
+    static uint8_t overflow_count = 0;
     TCNT1 = 1536;
     n_ovfs++;
     overflow_count++;
-
-    mpu6050_read_data();  // Read new data from MPU6050
+    read_mpu6050(); // Read new data from MPU6050
     angleFloat = calculate_angles();   // Update pitch and roll angles
-
     // Do this every 50 x 4 ms = 200 ms
     if (n_ovfs >= 50 && angleFloat < 90 && angleFloat > -90) {
         updateAngle = 1;   //
         n_ovfs = 0;        // Reset overflow counter
     }
 
-    // For laser 
-    if (overflow_count >= 25) {
+    // 4 x 10 x 250(LASER_TIMEOUT in laser.h)  = 10 sec
+    if (overflow_count >= 10) {
         overflow_count = 0;
         if (laser_on) {
             laser_timer++; 
         }
+    }
+}
+
+ISR(TIMER2_OVF_vect) {
+    static uint8_t overflow_bme = 0;
+    overflow_bme++;
+    read_bme280();  // Read BME280 data 
+    if (overflow_bme >= avr_time) {
+        heightFloat = height_print();
+        updateHeight = 1;
+        overflow_bme = 0;
     }
 }
