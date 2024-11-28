@@ -6,10 +6,10 @@
 <i>Brno University of Technology, Faculty of Electrical Engineering and Communication, winter semester 2024/2025</i>
 <h2>Team members</h2>
 
-Artur Nizamutdinov (first idea...)<br>
+Artur Nizamutdinov (Idea, documentation...)<br>
 Nikita Kolobov (Barometr, ...)<br>
 Jan Božejovský (Barometr, ...)<br>
-Jakub Kováč (LCD display, Documentation...)<br>
+Jakub Kováč (LCD display, documentation)<br>
 
 <h2>Teoretical description, inspiration</h2>
 <h3>What is an Inclinometer?</h3>
@@ -39,6 +39,7 @@ Detects the elevation above the ground to ensure the line array is lifted to the
 Projects a visible beam to indicate the direction for precise horizontal alignment.<br>
 
 5. Display Module<br>
+Shows angle and height measurments and laser status.<br>
 
 <h2>Software solution</h2>
 
@@ -46,10 +47,10 @@ Projects a visible beam to indicate the direction for precise horizontal alignme
 
 <h2>Sources and references</h2>
 <ol>
-  <li>Mikrokontroler ATmega328P (<a href="https://www.microchip.com/en-us/product/ATmega328P">dokumentace</a>) on board Arduino UNO</li>
-  <li>Gyroscope and accelerometer MPU6050 for Arduino (<a href="https://components101.com/sensors/mpu6050-module">web</a>)</li>
+  <li>Microcontroller ATmega328P (<a href="https://www.microchip.com/en-us/product/ATmega328P">dokumentace</a>) on board Arduino UNO</li>
+  <li>Gyroscope and accelerometer module MPU6050 for Arduino (<a href="https://components101.com/sensors/mpu6050-module">web</a>)</li>
   <li>LCD display module 16x2 (HD44780) for Arduino</li>
-  <li>Materials from school course DE2 <a href="https://github.com/tomas-fryza/avr-course/tree/master/lab4-lcd">Lab 4: LCD (Liquid crystal display)</a> (Tomáš Frýza)</li>
+  <li>Materials from school course BPC-DE2: <i><a href="https://github.com/tomas-fryza/avr-course/tree/master/lab4-lcd">Lab 4: LCD (Liquid crystal display)</a></i>; <i><a href="https://github.com/tomas-fryza/avr-course/tree/master/lab6-i2c">Lab 6: I2C (Inter-Integrated Circuits)</a></i>(Tomáš Frýza)</li>
   <li>External library <i>LCD library for HD44780 based LCD's</i>, (<a href="http://www.peterfleury.epizy.com/avr-software.html?i=1">web</a>) (©2019, Peter Fleury)</li>
     <!--
   <li>Název dalších položek, popř. <a href="about:blank">link</a>...</li>
