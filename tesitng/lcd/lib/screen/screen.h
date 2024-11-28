@@ -6,5 +6,6 @@
 */
 
 // Functions
+extern void lcdInit(void);
 extern void updateAngle(float angle);
 extern void updateHeight(float height);

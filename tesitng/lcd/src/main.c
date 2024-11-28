@@ -9,7 +9,7 @@
 #include <avr/interrupt.h>  // Interrupts standard C library for AVR-GCC
 #include "timer.h"          // Timer library for AVR-GCC
 #include <lcd.h>            // Peter Fleury's LCD library
-//#include <uart.h>           // Peter Fleury's UART library (for debug messages if needed)
+// #include <uart.h>           // Peter Fleury's UART library (for debug messages if needed)
 #include "screen.h"         // Custom C library.
 
 // -- Global variables -- 
@@ -28,36 +28,19 @@ float height = 0;
  */
 int main(void)
 {
-  // -- Local variables -- //
-  // Custom characters
-  uint8_t leftBar[8] = {0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x0};
-  uint8_t leftCenterBar[8] = {0x8,0x8,0x8,0x8,0x8,0x8,0x8,0x0};
-  uint8_t rightCenterBar[8] = {0x2,0x2,0x2,0x2,0x2,0x2,0x2,0x0};
-  uint8_t rightBar[8] = {0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x0};
-  uint8_t center[8] = {0xa,0x0,0x0,0x0,0x0,0x0,0xa,0x0};
-
   // -- Configure  Timers/Counters --
   // Setting prescalers
   TIM0_ovf_1ms();   // 1 ms
   TIM2_ovf_1ms();   // 1 ms
-
-  // Interrupts must be enabled, bacause of `uart_puts()`
-  sei();
+  sei(); // Enabling interrupts, also needed for 'uart_puts()'
 
   // -- Initialize USART to asynchronous, 8-N-1, 115200 Bd --
-  //uart_init(UART_BAUD_SELECT(115200, F_CPU));
-  //uart_puts("\r\nUART at 115200 Bd.\r\n");
+  // For debugging
+  // uart_init(UART_BAUD_SELECT(115200, F_CPU));
+  // uart_puts("\r\nUART running at 115200 Bd.\r\n");
 
-  // -- Initialize display --
-  lcd_init(LCD_DISP_ON);
-  lcd_custom_char(0, leftBar);
-  lcd_custom_char(1, leftCenterBar);
-  lcd_custom_char(2, rightCenterBar);
-  lcd_custom_char(3, rightBar);
-  lcd_custom_char(4, center);
-  lcd_clrscr();
-  lcd_home();
-
+  lcdInit(); // -- Initialize display --
+  
   // -- Main screen --
   lcd_puts("I   ");
   lcd_putc(4);
@@ -66,14 +49,14 @@ int main(void)
   lcd_gotoxy(0,1);
   lcd_puts("          -00.0m");
   
-  // -- Filling variables with initial values and enabling timers' overflowing--
+  // -- Filling variables with initial values and enabling timers' overflowing --
   angle = -96;
   height = -100;
   TIM0_ovf_enable();
   TIM2_ovf_enable();
 
   // -- Infinite loop --
-  while (1)
+  while (1) // Simulating screen update
   {
     if(updateAngleFlag == 1)
     { 
@@ -93,11 +76,11 @@ int main(void)
 //-- Interrupt service routines --
 /*
  * Function: Timer/Counter0 overflow interrupt
- * Purpose:  Simulate angle update.
+ * Purpose:  Simulate angle update every 50 ms.
 */
 ISR(TIMER0_OVF_vect)
 {
-  static uint16_t ovfs = 0;
+  static uint8_t ovfs = 0;
   TCNT0 = 6;    // accuration for 1ms
   ovfs++;
   if(ovfs >= 50)
@@ -114,12 +97,12 @@ ISR(TIMER0_OVF_vect)
 }
 /*
  * Function: Timer/Counter2 overflow interrupt
- * Purpose:  Simulate height update.
+ * Purpose:  Simulate height update every 50 ms.
 */
 ISR(TIMER2_OVF_vect)
 {
-  static uint16_t ovfs = 0;
-  TCNT0 = 6;    // accuration for 1ms
+  static uint8_t ovfs = 0;
+  TCNT0 = 6; // accuration for 1ms
   ovfs++;
   if(ovfs >= 50)
   {

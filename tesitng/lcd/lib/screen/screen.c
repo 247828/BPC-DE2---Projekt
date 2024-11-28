@@ -27,6 +27,29 @@ char print[2];          // for itoa()
 
 // -- Functions definition --
 /*
+* Function: lcdInit
+* Purpose:  Initializes the 16x2 LCD screen.
+* Returns:  none
+*/
+void lcdInit(void)
+{
+    // Local variables - custom characters
+    uint8_t leftBar[8] = {0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x0};
+    uint8_t leftCenterBar[8] = {0x8,0x8,0x8,0x8,0x8,0x8,0x8,0x0};
+    uint8_t rightCenterBar[8] = {0x2,0x2,0x2,0x2,0x2,0x2,0x2,0x0};
+    uint8_t rightBar[8] = {0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x0};
+    uint8_t center[8] = {0xa,0x0,0x0,0x0,0x0,0x0,0xa,0x0};
+    // Initialize LCD
+    lcd_init(LCD_DISP_ON);
+    lcd_custom_char(0, leftBar);
+    lcd_custom_char(1, leftCenterBar);
+    lcd_custom_char(2, rightCenterBar);
+    lcd_custom_char(3, rightBar);
+    lcd_custom_char(4, center);
+    lcd_clrscr();
+    lcd_home();
+}
+/*
 * Function: updateAngle
 * Purpose:  Updates the screen with new angle information and graphical represantation.
 * Returns:  none
