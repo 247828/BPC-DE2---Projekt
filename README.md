@@ -50,7 +50,7 @@ Registers Used
 | 10                     | 0x10           | 2           | ±8g                 |
 | 11                     | 0x18           | 3           | ±16g                |
 
-- Full-Scale Range: Measurement range of the accelerometer.
+Full-Scale Range: Measurement range of the accelerometer.
 
 #### GYRO_CONFIG Register 0x1B
 ![GYRO_CONFIG](GYRO_CONFIG.png)
@@ -61,7 +61,7 @@ Registers Used
 | 10                 | 0x10        | 2      | ±1000°/s        |
 | 11                 | 0x18        | 3      | ±2000°/s        |
 
-- Full-Scale Range: Indicates the maximum angular velocity (in degrees per second) that the gyroscope can measure.
+Full-Scale Range: Indicates the maximum angular velocity (in degrees per second) that the gyroscope can measure.
 
 
 [MPU6050 Manual](https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Register-Map1.pdf).
