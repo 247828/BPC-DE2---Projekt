@@ -10,7 +10,8 @@ Jan Božejovský (Barometr, ...)<br>
 Jakub Kováč (LCD display, documentation)<br>
 
 <h2>Teoretical description, inspiration</h2>
-<h3>What is an Inclinometer?</h3>
+
+### What is an Inclinometer?
 
 <div style="display: flex; justify-content: space-between; align-items: center;">
   <p style="flex: 1; max-width: 600px;">
