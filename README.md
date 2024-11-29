@@ -33,6 +33,7 @@ The gyroscope tracks angular velocity to calculate changes in angle over time, w
 
 I2C Sensor Address
 - MPU6050 Address (0x68): Default I2C address for the sensor.
+
 Registers Used
 - PWR_MGMT_1 (0x6B): Used to wake up the sensor from sleep mode.
 - ACCEL_CONFIG (0x1C): Configures accelerometer sensitivity.
