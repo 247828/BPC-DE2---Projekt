@@ -30,15 +30,14 @@ The main microcontroller used to read sensor data, process it, and control the o
 A 6-axis motion tracking device with a gyroscope and accelerometer.
 The gyroscope tracks angular velocity to calculate changes in angle over time, while the accelerometer detects tilt based on the device's orientation relative to gravity. A complementary filter combines both data sources to provide a stable and accurate angle measurement. <br>
 
-### I2C Sensor Address
-- **MPU6050 Address (0x68):** Default I2C address for the sensor.
-
-### Registers Used
-- **PWR_MGMT_1 (0x6B):** Used to wake up the sensor from sleep mode.
-- **ACCEL_CONFIG (0x1C):** Configures accelerometer sensitivity.
-- **GYRO_CONFIG (0x1B):** Configures gyroscope sensitivity.
-- **ACCEL_XOUT_H (0x3B):** Starting address for accelerometer data (X, Y, Z).
-- **GYRO_XOUT_H (0x43):** Starting address for gyroscope data (X, Y, Z).
+I2C Sensor Address
+- MPU6050 Address (0x68): Default I2C address for the sensor.
+Registers Used
+- PWR_MGMT_1 (0x6B): Used to wake up the sensor from sleep mode.
+- ACCEL_CONFIG (0x1C): Configures accelerometer sensitivity.
+- GYRO_CONFIG (0x1B): Configures gyroscope sensitivity.
+- ACCEL_XOUT_H (0x3B): Starting address for accelerometer data (X, Y, Z).
+- GYRO_XOUT_H (0x43): Starting address for gyroscope data (X, Y, Z).
 
 
 [MPU6050 Manual](https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Register-Map1.pdf).
