@@ -29,7 +29,7 @@ The main microcontroller used to read sensor data, process it, and control the o
 
 ### 2. MPU6050 (Inclinometer)<br>
 A 6-axis motion tracking device with a gyroscope and accelerometer.
-The gyroscope tracks angular velocity to calculate changes in angle over time, while the accelerometer detects tilt based on the device's orientation relative to gravity. A complementary filter combines both data sources to provide a stable and accurate angle measurement. <br>
+The gyroscope tracks angular velocity to calculate changes in angle over time, while the accelerometer detects tilt based on the device's orientation relative to gravity. <br>
 
 I2C Sensor Address
 - MPU6050 Address (0x68): Default I2C address for the sensor.
