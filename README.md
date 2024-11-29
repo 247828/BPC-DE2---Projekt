@@ -61,7 +61,7 @@ Projects a visible beam to indicate the direction for precise horizontal alignme
 ### 5. Display Module<br>
 Shows angle (with graphical representation) and height measurments and laser status.<br>
 
-### 5. Reset Height and ON/OFF(Laser) buttons <br>
+### 6. Reset Height and ON/OFF(Laser) buttons <br>
 
 ![Circuit Diagram](circuit_image.png)
 
