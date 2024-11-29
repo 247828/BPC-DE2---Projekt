@@ -98,6 +98,7 @@ The total acceleration vector is calculated as the magnitude of the acceleromete
 A complementary filter combines the angles calculated from the gyroscope and accelerometer:
 - The gyroscope angle provides smooth and stable data over time but can accumulate drift.
 - The accelerometer angle provides an absolute reference but is sensitive to vibrations and sudden movements.
+  
 The filter weights the gyroscope angle (96%) and the accelerometer angle (4%) to achieve a balance between stability and accuracy. 
 
 
