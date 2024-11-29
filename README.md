@@ -30,7 +30,8 @@ Jakub Kováč (LCD display, documentation)<br>
 The main microcontroller used to read sensor data, process it, and control the output devices.<br>
 
 2. MPU6050 (Inclinometer)<br>
-Measures the tilt angle of the line array with high accuracy.<br>
+A 6-axis motion tracking device with a gyroscope and accelerometer.
+Measures acceleration (in 3 axes) and angular velocity (gyroscope data) to track motion and orientation. <br>
 
 3. BMP280 (Height Sensor)<br>
 Detects the elevation above the ground to ensure the line array is lifted to the correct height.<br>
