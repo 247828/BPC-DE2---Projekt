@@ -246,29 +246,11 @@ int main(void)
   load_temp_calibration_data();
   load_press_calibration_data();
 
-
-  // char uart_msg[10];
-  // uint8_t n_devices = 0; 
-
-  //    for (uint8_t sla = 8; sla < 120; sla++)
-  //   {
-  //       if (twi_test_address(sla) == 0)  // If ACK from Slave
-  //       {
-  //           sprintf(uart_msg, "\r\n0x%02x", sla);
-  //           uart_puts(uart_msg);
-  //           n_devices++;
-  //       }
-  //       // _delay_ms(1);  // !!! Just for the simulation !!!
-  //   }
-  //   sprintf(uart_msg, "\r\n%u device(s) detected\r\n", n_devices);
-  //   uart_puts(uart_msg);
-
-
-  // // Test connection to BME280
-  // if (twi_test_address(BME_slave) != 0) {
-  //     uart_puts("[ERROR] BME280 device not detected\r\n");
-  //     while (1);
-  // } 
+  // Test connection to BME280
+  if (twi_test_address(BME_slave) != 0) {
+      uart_puts("[ERROR] BME280 device not detected\r\n");
+      while (1);
+  } 
 
   // Calibrate MPU6050
   lcd_clrscr();
@@ -319,7 +301,7 @@ int main(void)
       uart_puts("Height: ");
       uart_puts(height_string);
       updateHeight = 0;
-      uart_puts(" m\r\n");
+      uart_puts("\r\n");
     }
 
     if(updateAngle == 1) {   
@@ -328,7 +310,7 @@ int main(void)
       dtostrf(angleFloat, 6, 1, angle_string); 
       uart_puts("Angle: ");
       uart_puts(angle_string);
-      uart_puts(" m\r\n");
+      uart_puts("\r\n");
 
     // uart_puts(" AccX: ");
     // dtostrf(accel_values[0], 6, 2, string);
