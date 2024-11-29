@@ -41,6 +41,21 @@ Registers Used
 - ACCEL_XOUT_H (0x3B): Starting address for accelerometer data (X, Y, Z).
 - GYRO_XOUT_H (0x43): Starting address for gyroscope data (X, Y, Z).
 
+### Accelerometer Sensitivity Settings (ACCEL_CONFIG Register 0x1C)
+
+| **Binary (Bits 4-3)** | **Hexadecimal** | **AFS_SEL** | **Full-Scale Range** |
+|------------------------|-----------------|-------------|----------------------|
+| 00                     | 0x00           | 0           | ±2g                 |
+| 01                     | 0x08           | 1           | ±4g                 |
+| 10                     | 0x10           | 2           | ±8g                 |
+| 11                     | 0x18           | 3           | ±16g                |
+
+- Binary (Bits 4-3): Bits used to configure accelerometer sensitivity.
+- Hexadecimal: Hexadecimal value written to the register for the configuration.
+- AFS_SEL: Decimal equivalent of binary configuration.
+- Full-Scale Range: Measurement range of the accelerometer.
+
+
 
 [MPU6050 Manual](https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Register-Map1.pdf).
 
