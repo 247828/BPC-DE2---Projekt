@@ -41,6 +41,8 @@ Projects a visible beam to indicate the direction for precise horizontal alignme
 5. Display Module<br>
 Shows angle and height measurments and laser status.<br>
 
+![Circuit Diagram](circuit_image.png)
+
 <h2>Software solution</h2>
 
 <h2>Instructions ??</h2>
