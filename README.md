@@ -92,7 +92,7 @@ The data reading function communicates with the sensor over I2C to read raw acce
 
 The calibration process averages multiple readings to calculate gyroscope offsets, eliminating bias in measurements. 
 ### Gyroscope-Based Angle Calculation:
-Using the corrected gyroscope data, the pitch and roll angles are updated by integrating the angular velocity over time (angle += gyro_value * time_interval). This provides the relative angle changes based on rotation.
+Using the corrected gyroscope data, the pitch and roll angles are updated by integrating the angular velocity over time (angle += gyro_value * time_interval), where time_interval corresponds to the overflow period configured by the timer in main.c. 
 
 ### Accelerometer-Based Angle Calculation:
 The total acceleration vector is calculated as the magnitude of the accelerometer values in the X, Y, and Z axes. This is done to normalize the accelerometer data. Pitch and roll angles are calculated using trigonometric functions (atan2). These angles represent the sensor's orientation with respect to gravity.
