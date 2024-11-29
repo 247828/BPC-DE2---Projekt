@@ -43,22 +43,11 @@ Registers Used
 
 #### ACCEL_CONFIG Register 0x1C
 ![ACCEL_CONFIG](ACCEL_CONFIG.png)
-| **Binary (Bits 4:3)** | **Hexadecimal** | **AFS_SEL** | **Full-Scale Range** | **LSB Sensitivity** |
-|------------------------|-----------------|-------------|-----------------------|----------------------|
-| 00                     | 0x00            | 0           | ±2g                  | 16384 LSB/g          |
-| 01                     | 0x08            | 1           | ±4g                  | 8192 LSB/g           |
-| 10                     | 0x10            | 2           | ±8g                  | 4096 LSB/g           |
-| 11                     | 0x18            | 3           | ±16g                 | 2048 LSB/g           |
 
 
 #### GYRO_CONFIG Register 0x1B
 ![GYRO_CONFIG](GYRO_CONFIG.png)
-| **Binary (Bits 4:3)** | **Hexadecimal** | **FS_SEL** | **Full-Scale Range** | **LSB Sensitivity** |
-|------------------------|-----------------|------------|----------------------|---------------------|
-| 00                     | 0x00            | 0          | ±250°/s             | 131 LSB/°/s         |
-| 01                     | 0x08            | 1          | ±500°/s             | 65.5 LSB/°/s        |
-| 10                     | 0x10            | 2          | ±1000°/s            | 32.8 LSB/°/s        |
-| 11                     | 0x18            | 3          | ±2000°/s            | 16.4 LSB/°/s        |
+
 
 
 [MPU6050 Manual](https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Register-Map1.pdf).
@@ -75,6 +64,33 @@ Shows angle (with graphical representation) and height measurments and laser sta
 ![Circuit Diagram](circuit_image.png)
 
 <h2>Software solution</h2>
+
+### MPU6050 
+
+The MPU6050 initialization function sets the sensor to wake-up mode, configures the accelerometer for a sensitivity range of ±8g. The sensitivity is measured in LSB (Least Significant Bits) per g, where g is the acceleration due to gravity (9.81 m/s²). If the accelerometer is set to a full-scale range of ±8g, the sensor's sensitivity is 4096 LSB/g. This means each unit of raw data corresponds to 1/4096 of g. 
+
+| **Binary (Bits 4:3)** | **Hexadecimal** | **AFS_SEL** | **Full-Scale Range** | **LSB Sensitivity** |
+|------------------------|-----------------|-------------|-----------------------|----------------------|
+| 00                     | 0x00            | 0           | ±2g                  | 16384 LSB/g          |
+| 01                     | 0x08            | 1           | ±4g                  | 8192 LSB/g           |
+| 10                     | 0x10            | 2           | ±8g                  | 4096 LSB/g           |
+| 11                     | 0x18            | 3           | ±16g                 | 2048 LSB/g           |
+
+
+Configures the accelerometer for a sensitivity range of ±8g, and the gyroscope for ±500°/s. The sensitivity is measured in LSB per degree per second (°/s). If the gyroscope is set to a full-scale range of ±500°/s, the sensor's sensitivity is 65.5 LSB/°/s. This means each unit of raw data corresponds to 1/65.5 of the angular velocity in °/s.
+
+| **Binary (Bits 4:3)** | **Hexadecimal** | **FS_SEL** | **Full-Scale Range** | **LSB Sensitivity** |
+|------------------------|-----------------|------------|----------------------|---------------------|
+| 00                     | 0x00            | 0          | ±250°/s             | 131 LSB/°/s         |
+| 01                     | 0x08            | 1          | ±500°/s             | 65.5 LSB/°/s        |
+| 10                     | 0x10            | 2          | ±1000°/s            | 32.8 LSB/°/s        |
+| 11                     | 0x18            | 3          | ±2000°/s            | 16.4 LSB/°/s        |
+
+The data reading function communicates with the sensor over I2C to read raw accelerometer and gyroscope data from memory registers, which are then converted to physical units (g for acceleration and °/s for angular velocity). 
+
+The calibration process averages multiple readings to calculate gyroscope offsets, eliminating bias in measurements. 
+The angle calculation combines gyroscope and accelerometer data using a complementary filter, which leverages the strengths of both sensors to provide stable and accurate roll and pitch angles. 
+
 
 <h3>Showing measurments to LCD display</h3>
 In this project, the HD44780 based 16x2 LCD screen is used. The first line displays the angle value between -90 and 90 degrees with a graphical representation resembling a spirit level. The second line displays the height value between -99.9 and 99.9 m. Two functions are created to display the new value - one to display the new angle and one to display the new height.
