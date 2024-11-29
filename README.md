@@ -41,9 +41,8 @@ Registers Used
 - ACCEL_XOUT_H (0x3B): Starting address for accelerometer data (X, Y, Z).
 - GYRO_XOUT_H (0x43): Starting address for gyroscope data (X, Y, Z).
 
-
+#### ACCEL_CONFIG Register 0x1C
 ![ACCEL_CONFIG](ACCEL_CONFIG.png)
-ACCEL_CONFIG Register 0x1C
 | **Binary (Bits 4-3)** | **Hexadecimal** | **AFS_SEL** | **Full-Scale Range** |
 |------------------------|-----------------|-------------|----------------------|
 | 00                     | 0x00           | 0           | ±2g                 |
