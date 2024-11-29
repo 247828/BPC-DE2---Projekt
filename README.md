@@ -109,5 +109,6 @@ Jakub Kováč (LCD displej, dokumentace...)<br>
   <li>Materiály z cvičení <a href="https://github.com/tomas-fryza/avr-course/tree/master/lab4-lcd">Lab 4: LCD (Liquid crystal display)</a> (Tomáš Frýza)</li>
   <li>Knihovna <i>LCD library for HD44780 based LCD's</i>, (<a href="http://www.peterfleury.epizy.com/avr-software.html?i=1">web</a>) (©2019, Peter Fleury)</li>
   <li>Název dalších položek, popř. <a href="about:blank">link</a>...</li>
+  <li>[Cirkit Designer](https://app.cirkitdesigner.com/)</li>
 </ol>
 -->
