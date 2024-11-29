@@ -1,7 +1,5 @@
 # BPC-DE2 Project
 
-(čeština zakomentovaná ve zdrojáku README)
-
 <h1>Arduino-Based Inclinometer for Line Array Audio Systems</h1>
 <i>Brno University of Technology, Faculty of Electrical Engineering and Communication, winter semester 2024/2025</i>
 <h2>Team members</h2>
@@ -20,9 +18,8 @@ Jakub Kováč (LCD display, documentation)<br>
     <br><br>
     The inclinometer measures the angle of the line array with an accuracy of 0.1 degrees, ensuring it is perfectly aligned. A height sensor calculates how high the line array needs to be lifted to achieve the best sound coverage. To help with horizontal alignment, a laser projects a visible beam to guide the positioning. All the important information, including the tilt angle and height, is shown on a display in real time.
   </p>
-  <img src="linearray.jpg" alt="Line Array" style="width: 500px; margin-left 20px;">
+  <img src="/img/linearray.jpg" alt="Line Array" style="width: 500px; margin-left 20px;">
 </div>
-
 
 <h2>Hardware components</h2>
 
@@ -41,26 +38,38 @@ Detects the elevation above the ground to ensure the line array is lifted to the
 Projects a visible beam to indicate the direction for precise horizontal alignment.<br>
 
 5. Display Module<br>
-Shows angle and height measurments and laser status.<br>
+Shows angle (with graphical representation) and height measurments and laser status.<br>
 
 ![Circuit Diagram](circuit_image.png)
 
 <h2>Software solution</h2>
 
-<h2>Instructions ??</h2>
+<h3>Showing measurments to LCD display</h3>
+In this project, the HD44780 based 16x2 LCD screen is used. The first line displays the angle value between -90 and 90 degrees with a graphical representation resembling a spirit level. The second line displays the height value between -99.9 and 99.9 m. Two functions are created to display the new value - one to display the new angle and one to display the new height.
+<br><br>
+The numeric data is converted from a float to three integer values representing the integer part, the decimal part and the sign before displaying. It is then evaluated whether it is a positive or negative number and then whether the integer part is a two-digit or a single-digit number. The number is then displayed on the screen.
+<br><br>
+When the angle is displayed, the "level" is updated each time the function is called.  7 character fields have been reserved for the level display. Since the character field is 5 pixels wide, the range of -90 to 90 degrees can be represented with a step of 6 degrees. 4 custom characters (vertical bars) were created so that the position can be displayed across the entire width of the character. The display algorithm consists of calculating the position of the character according to the sign and then selecting one of the five vertical bar characters according to the interval into which the angle falls.
+<br><br>
+<img src="/img/lcd_sim.gif" alt="LCD display simulation" style="width: 500px; margin-left 20px;">
+
+<h2>Instructions</h2>
+
+
 
 <h2>Sources and references</h2>
 <ol>
-  <li>Microcontroller ATmega328P (<a href="https://www.microchip.com/en-us/product/ATmega328P">dokumentace</a>) on board Arduino UNO</li>
-  <li>Gyroscope and accelerometer module MPU6050 for Arduino (<a href="https://components101.com/sensors/mpu6050-module">web</a>)</li>
+  <li>Microcontroller ATmega328P (<a href="https://www.microchip.com/en-us/product/ATmega328P">documentation</a>) on board Arduino UNO</li>
+  <li>Gyroscope and accelerometer module MPU6050 for Arduino (<a href="https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Datasheet1.pdf">sensor documentation</a>)</li>
+  <li>Humidity sensor BME280 module for Arduino (<a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/">sensor documentation</a>)</li>
   <li>LCD display module 16x2 (HD44780) for Arduino</li>
   <li>Materials from school course BPC-DE2: <i><a href="https://github.com/tomas-fryza/avr-course/tree/master/lab4-lcd">Lab 4: LCD (Liquid crystal display)</a></i>; <i><a href="https://github.com/tomas-fryza/avr-course/tree/master/lab6-i2c">Lab 6: I2C (Inter-Integrated Circuits)</a></i>(Tomáš Frýza)</li>
-  <li>External library <i>LCD library for HD44780 based LCD's</i>, (<a href="http://www.peterfleury.epizy.com/avr-software.html?i=1">web</a>) (©2019, Peter Fleury)</li>
+  <li>AVR-GCC libraries <i>LCD library for HD44780 based LCD's</i> and <i>UART library</i>, (<a href="http://www.peterfleury.epizy.com/avr-software.html?i=1">web</a>) (©2019, Peter Fleury)</li>
+  <li>Custom libraries <i>MPU6050.h</i> and <i>BME280.h</i></li>
     <!--
   <li>Název dalších položek, popř. <a href="about:blank">link</a>...</li>
     -->
 </ol> 
-
 
 <!-- <h1>Název projektu</h1>
 <i>Vysoké učení technické v Brně, Fakulta elektrotechniky a komunikačních technologií, zimní semestr 2024/2025</i>
