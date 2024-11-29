@@ -91,10 +91,10 @@ Configures the accelerometer for a sensitivity range of ±8g, and the gyroscope 
 The data reading function communicates with the sensor over I2C to read raw accelerometer and gyroscope data from memory registers, which are then converted to physical units (g for acceleration and °/s for angular velocity). 
 
 The calibration process averages multiple readings to calculate gyroscope offsets, eliminating bias in measurements. 
-### Gyroscope-Based Angle Calculation:
+#### Gyroscope-Based Angle Calculation:
 Using the corrected gyroscope data, the pitch and roll angles are updated by integrating the angular velocity over time (angle += gyro_value * time_interval), where time_interval corresponds to the overflow period configured by the timer in main.c. 
 
-### Accelerometer-Based Angle Calculation:
+#### Accelerometer-Based Angle Calculation:
 The total acceleration vector is calculated as the magnitude of the accelerometer values in the X, Y, and Z axes. This is done to normalize the accelerometer data. Pitch and roll angles are calculated using trigonometric functions (atan2). These angles represent the sensor's orientation with respect to gravity.
 
 A complementary filter combines the angles calculated from the gyroscope and accelerometer:
@@ -102,6 +102,14 @@ A complementary filter combines the angles calculated from the gyroscope and acc
 - The accelerometer angle provides an absolute reference but is sensitive to vibrations and sudden movements.
   
 The filter weights the gyroscope angle (96%) and the accelerometer angle (4%) to achieve a balance between stability and accuracy. 
+
+### BME280
+
+### Results from Real-Time Sensor Data Visualization
+<img src="visualization.png" alt="Visualization" width="600" height="400">
+MPU6050 (blue line): Represents the angular tilt (in degrees) measured by the gyroscope and accelerometer.
+
+BME280 (red line): Represents the height (in meters) calculated using atmospheric pressure readings.
 
 
 <h3>Showing measurments to LCD display</h3>
@@ -112,15 +120,6 @@ The numeric data is converted from a float to three integer values representing 
 When the angle is displayed, the "level" is updated each time the function is called.  7 character fields have been reserved for the level display. Since the character field is 5 pixels wide, the range of -90 to 90 degrees can be represented with a step of 6 degrees. 4 custom characters (vertical bars) were created so that the position can be displayed across the entire width of the character. The display algorithm consists of calculating the position of the character according to the sign and then selecting one of the five vertical bar characters according to the interval into which the angle falls.
 <br><br>
 <img src="/img/lcd_sim.gif" alt="LCD display simulation" style="width: 500px; margin-left 20px;">
-
-### Results from Real-Time Sensor Data Visualization
-
-<img src="visualization.png" alt="Visualization" width="600" height="400">
-MPU6050 (blue line): Represents the angular tilt (in degrees) measured by the gyroscope and accelerometer.
-
-BME280 (red line): Represents the height (in meters) calculated using atmospheric pressure readings.
-
-
 
 
 
