@@ -1,6 +1,6 @@
 /*
   BPC-DE2 Project - variant with screen routines in and uart output in main.c file
-  * @author Artur Nizabudtinov, Nikita Kolobov, Jan Bozejovsky, Jakub Kovac
+  * @author Artur Nizamutdinov, Nikita Kolobov, Jan Bozejovsky, Jakub Kovac
   * 29. 11. 2024
 */
 
