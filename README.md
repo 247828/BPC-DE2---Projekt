@@ -43,23 +43,23 @@ Registers Used
 
 #### ACCEL_CONFIG Register 0x1C
 ![ACCEL_CONFIG](ACCEL_CONFIG.png)
-| **Binary (Bits 4-3)** | **Hexadecimal** | **AFS_SEL** | **Full-Scale Range** |
-|------------------------|-----------------|-------------|----------------------|
-| 00                     | 0x00           | 0           | ±2g                 |
-| 01                     | 0x08           | 1           | ±4g                 |
-| 10                     | 0x10           | 2           | ±8g                 |
-| 11                     | 0x18           | 3           | ±16g                |
+| **Binary (Bits 4:3)** | **Hexadecimal** | **AFS_SEL** | **Full-Scale Range** | **LSB Sensitivity** |
+|------------------------|-----------------|-------------|-----------------------|----------------------|
+| 00                     | 0x00            | 0           | ±2g                  | 16384 LSB/g          |
+| 01                     | 0x08            | 1           | ±4g                  | 8192 LSB/g           |
+| 10                     | 0x10            | 2           | ±8g                  | 4096 LSB/g           |
+| 11                     | 0x18            | 3           | ±16g                 | 2048 LSB/g           |
 
 Full-Scale Range: Measurement range of the accelerometer.
 
 #### GYRO_CONFIG Register 0x1B
 ![GYRO_CONFIG](GYRO_CONFIG.png)
-| Binary (Bits 4-3) | Hexadecimal | FS_SEL | Full-Scale Range |
-|--------------------|-------------|--------|------------------|
-| 00                 | 0x00        | 0      | ±250°/s         |
-| 01                 | 0x08        | 1      | ±500°/s         |
-| 10                 | 0x10        | 2      | ±1000°/s        |
-| 11                 | 0x18        | 3      | ±2000°/s        |
+| **Binary (Bits 4:3)** | **Hexadecimal** | **FS_SEL** | **Full-Scale Range** | **LSB Sensitivity** |
+|------------------------|-----------------|------------|----------------------|---------------------|
+| 00                     | 0x00            | 0          | ±250°/s             | 131 LSB/°/s         |
+| 01                     | 0x08            | 1          | ±500°/s             | 65.5 LSB/°/s        |
+| 10                     | 0x10            | 2          | ±1000°/s            | 32.8 LSB/°/s        |
+| 11                     | 0x18            | 3          | ±2000°/s            | 16.4 LSB/°/s        |
 
 Full-Scale Range: Indicates the maximum angular velocity (in degrees per second) that the gyroscope can measure.
 
