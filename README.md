@@ -50,11 +50,18 @@ Registers Used
 | 10                     | 0x10           | 2           | ±8g                 |
 | 11                     | 0x18           | 3           | ±16g                |
 
-- Binary (Bits 4-3): Bits used to configure accelerometer sensitivity.
-- Hexadecimal: Hexadecimal value written to the register for the configuration.
-- AFS_SEL: Decimal equivalent of binary configuration.
 - Full-Scale Range: Measurement range of the accelerometer.
 
+#### GYRO_CONFIG Register 0x1B
+![GYRO_CONFIG](GYRO_CONFIG.png)
+| Binary (Bits 4-3) | Hexadecimal | FS_SEL | Full-Scale Range |
+|--------------------|-------------|--------|------------------|
+| 00                 | 0x00        | 0      | ±250°/s         |
+| 01                 | 0x08        | 1      | ±500°/s         |
+| 10                 | 0x10        | 2      | ±1000°/s        |
+| 11                 | 0x18        | 3      | ±2000°/s        |
+
+- Full-Scale Range: Indicates the maximum angular velocity (in degrees per second) that the gyroscope can measure.
 
 
 [MPU6050 Manual](https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Register-Map1.pdf).
