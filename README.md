@@ -23,10 +23,10 @@ Jakub Kováč (LCD display, documentation)<br>
 
 <h2>Hardware components</h2>
 
-# 1. Arduino Uno<br>
+### 1. Arduino Uno<br>
 The main microcontroller used to read sensor data, process it, and control the output devices.<br>
 
-# 2. MPU6050 (Inclinometer)<br>
+### 2. MPU6050 (Inclinometer)<br>
 A 6-axis motion tracking device with a gyroscope and accelerometer.
 The gyroscope tracks angular velocity to calculate changes in angle over time, while the accelerometer detects tilt based on the device's orientation relative to gravity. A complementary filter combines both data sources to provide a stable and accurate angle measurement. <br>
 
@@ -42,13 +42,13 @@ Registers Used
 
 [MPU6050 Manual](https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Register-Map1.pdf).
 
-# 3. BMP280 (Height Sensor)<br>
+### 3. BMP280 (Height Sensor)<br>
 Detects the elevation above the ground to ensure the line array is lifted to the correct height.<br>
 
-# 4. Laser Module<br>
+### 4. Laser Module<br>
 Projects a visible beam to indicate the direction for precise horizontal alignment.<br>
 
-# 5. Display Module<br>
+### 5. Display Module<br>
 Shows angle (with graphical representation) and height measurments and laser status.<br>
 
 ![Circuit Diagram](circuit_image.png)
