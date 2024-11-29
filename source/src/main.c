@@ -1,5 +1,7 @@
 /*
-  BPC-DE2 Projekt
+  BPC-DE2 Project - variant with screen routines in and uart output in main.c file
+  * @author Artur Nizabudtinov, Nikita Kolobov, Jan Bozejovsky, Jakub Kovac
+  * 29. 11. 2024
 */
 
 // -- Includes -- //
@@ -7,17 +9,17 @@
 #include <avr/interrupt.h>  // Interrupts standard C library for AVR-GCC
 #include <gpio.h>           // GPIO library for AVR-GCC
 #include "timer.h"          // Timer library for AVR-GCC
-#include "twi.h"
+#include "twi.h"            // I2C/TWI library
 #include <lcd.h>            // Peter Fleury's LCD library
 #include <uart.h>           // Peter Fleury's UART library
 #include <stdlib.h>         // C library. Needed for number conversions
 #include <math.h>           // C library fabs()
-#include "mpu6050.h"
+#include "mpu6050.h"        // Accelerometer and Gyroscope Sensor library
 #include "laser.h"          // Laser library
-#include <util/delay.h> 
-#include "BME280.h"
-#include <BME280.c>
-
+#include <util/delay.h>     // for delay
+#include "BME280.h"         // Humidity sensor library
+#include <BME280.c>         // needed ?
+// #include "screen.h"      // Screen library for 16x2 LCD screen (!needed test!)
 
 #define MPU6050_ADDRESS 0x68         // I2C address of MPU6050
 #define calibrate_time 1000
@@ -35,114 +37,122 @@
 
 // -- Global variables -- //
 // "Flags"
-volatile uint8_t updateAngle = 0;
-volatile uint8_t updateHeight = 0;
-volatile uint8_t calibScreen = 0;
-volatile uint8_t mainScreen = 0;
+volatile uint8_t updateAngleFlag = 0;
+volatile uint8_t updateHeightFlag = 0;
+//volatile uint8_t calibScreen = 0;
+//volatile uint8_t mainScreen = 0;
 
-char print[3]; // itoa
+char print[2]; // itoa // 3
 
 float angleFloat = 0;
 float heightFloat = 0;
 
+// Structs for converted numbers into integers
 struct Angle_structure {
-    int8_t aInt;    // Integer part
-    uint8_t aDec;   // Decimal part
+    int8_t aInt;   // Integer part
+    uint8_t aDec;  // Decimal part
     uint8_t aSign; // Sign (0 positive or 1 negative)
-} angle;
-/*
+} angleInt;
+
 struct Height_structure {
     int8_t hInt;    // Integer part
     uint8_t hDec;   // Decimal part
     uint8_t hSign; // Sign (0 positive or 1 negative)
-} height;
-*/
+} heightInt;
+
 
 // -- Function definitions --
-/*
- * Function: updAngle
- * Purpose:  Update the screen with new angle information and graphical represantation.
- * Returns:  none
- */
-void updAngle() {
+/**
+    * Function: updateAngle
+    * Purpose:  Updates the screen with new angle information and graphical represantation.
+    * @return None
+*/
+void updateAngle() {
+  // Local variables
   static int8_t barPosition = 0;
-  // float to dec
+
+  // Converting float to decimal parts with sign flag
   if (angleFloat < 0) 
   {
-    angle.aSign = 1; 
+    angleInt.aSign = 1; 
   }
   else
   {
-    angle.aSign = 0;
+    angleInt.aSign = 0;
   }
-  angle.aInt = fabs(angleFloat);
-  angle.aDec = (fabs(angleFloat) - angle.aInt) * 10;
+  angleInt.aInt = fabs(angleFloat);
+  angleInt.aDec = (fabs(angleFloat) - angleInt.aInt) * 10;
 
-  if (angle.aSign == 1) 
+  // Writing number to LCD
+  if (angleInt.aSign == 1) // Negative number
   {
-    if(angle.aInt >= 10)
+    if(angleInt.aInt >= 10) // less than or equal to -10
     {
-      lcd_gotoxy(10, 0);
+      lcd_gotoxy(10, 0); 
       lcd_putc('-');
-      itoa(angle.aInt, print, 10);
+      itoa(angleInt.aInt, print, 10);
       lcd_puts(print);
       lcd_gotoxy(13, 0);
       lcd_putc(',');
-      itoa(angle.aDec, print, 10);
+      itoa(angleInt.aDec, print, 10);
       lcd_puts(print);
     }
-    else
+    else // greater than or equal to -9
     {
       lcd_gotoxy(10, 0);
       lcd_puts(" -");
-      itoa(angle.aInt, print, 10);
+      itoa(angleInt.aInt, print, 10);
       lcd_puts(print);
       lcd_gotoxy(13, 0);
       lcd_putc(',');
-      itoa(angle.aDec, print, 10);
+      itoa(angleInt.aDec, print, 10);
       lcd_puts(print);
     }
   }
-  else 
+  else // Positive number
   {
-      if(angle.aInt >= 10)
+      if(angleInt.aInt >= 10) // greater than or equal to 10
     {
       lcd_gotoxy(10, 0);
       lcd_putc(' ');
-      itoa(angle.aInt, print, 10);
+      itoa(angleInt.aInt, print, 10);
       lcd_puts(print);
       lcd_gotoxy(13, 0);
       lcd_putc(',');
-      itoa(angle.aDec, print, 10);
+      itoa(angleInt.aDec, print, 10);
       lcd_puts(print);
     }
-    else
+    else // less than or equal to 9
     {
       lcd_gotoxy(10, 0);
       lcd_puts("  ");
-      itoa(angle.aInt, print, 10);
+      itoa(angleInt.aInt, print, 10);
       lcd_puts(print);
       lcd_gotoxy(13, 0);
       lcd_putc(',');
-      itoa(angle.aDec, print, 10);
+      itoa(angleInt.aDec, print, 10);
       lcd_puts(print);
     }
   }
-  // Bar position
-  if(angle.aInt >= 6)
+
+  // Calculating bar position and choosing correct character
+  if(angleInt.aInt >= 6)
   { 
-    barPosition = (angle.aInt-6)/30 + 1;
+    barPosition = (angleInt.aInt-6)/30 + 1;
   }
   else
   {
     barPosition = 0;
   }
 
-  lcd_gotoxy(0, 0);
-  lcd_puts("I   ");
+  // Clear the bar
+  lcd_gotoxy(1, 0);
+  lcd_puts("   ");
   lcd_putc(4);
-  lcd_puts("   I");
-  if (angle.aSign == 0)
+  lcd_puts("   ");
+
+  // New bar position (character position)
+  if (angleInt.aSign == 0)
   {
     lcd_gotoxy(4+barPosition, 0);
 
@@ -156,8 +166,9 @@ void updAngle() {
     uart_puts("\r\n");
     */
   }
-  //
-  if(angle.aInt < 6 && angle.aInt > -6) lcd_putc('I');
+
+  // Choose new character and show it
+  if(angleInt.aInt < 6 && angleInt.aInt > -6) lcd_putc('I');
   else if((angleFloat <= (-6)-(barPosition-1)*30 && angleFloat > (-12)-(barPosition-1)*30) || (angleFloat >= 30+(barPosition-1)*30 && angleFloat < 36+(barPosition-1)*30)) 
   {
     lcd_putc(3);
@@ -178,7 +189,69 @@ void updAngle() {
   {
     lcd_putc(0);
   }
-  updateAngle--;
+  updateAngleFlag = 0;
+}
+/**
+    * Function: updateHeight
+    * Purpose:  Updates the screen with new angle information.
+    * @return None
+*/
+void updateHeight(float height) 
+{
+  // Converting float to decimal parts with sign flag
+  if(height < 0) heightInt.hSign = 1; 
+  else heightInt.hSign = 0;
+  heightInt.hInt = fabs(height);
+  heightInt.hDec = (fabs(height) - heightInt.hInt) * 10;
+
+  // Writing number to LCD  
+  if(heightInt.hSign == 1) // Negative number
+  {
+    if(heightInt.hInt >= 10) // less than or equal to -10
+    {
+      lcd_gotoxy(10, 1);
+      lcd_putc('-');
+      itoa(heightInt.hInt, print, 10);
+      lcd_puts(print);
+      lcd_gotoxy(14, 1);
+      itoa(heightInt.hDec, print, 10);
+      lcd_puts(print);
+    }
+    else // greater than or equal to -9
+    {
+      lcd_gotoxy(10, 1);
+      lcd_puts(" -");
+      itoa(heightInt.hInt, print, 10);
+      lcd_puts(print);
+      lcd_gotoxy(14, 1);
+      itoa(heightInt.hDec, print, 10);
+      lcd_puts(print);
+    }
+  }
+  else // Positive number
+  {
+    if(heightInt.hInt >= 10) // greater than or equal to 10
+    {
+      lcd_gotoxy(10, 1);
+      lcd_putc(' ');
+      itoa(heightInt.hInt, print, 10);
+      lcd_puts(print);
+      lcd_gotoxy(14, 1);
+      itoa(heightInt.hDec, print, 10);
+      lcd_puts(print);
+    }
+    else // less than or equal to 9
+    {
+      lcd_gotoxy(10, 1);
+      lcd_puts("  ");
+      itoa(heightInt.hInt, print, 10);
+      lcd_puts(print);
+      lcd_gotoxy(14, 1);
+      itoa(heightInt.hDec, print, 10);
+      lcd_puts(print);
+    }
+  }
+  updateAngleFlag = 0;
 }
 
 /*
@@ -186,12 +259,9 @@ void updAngle() {
  * Purpose: 
  * Returns:  none
  */
-
 int main(void)
 {
-  
-
-  // -- Local variables -- //
+  // -- Local variables --
   // Custom characters
   uint8_t leftBar[8] = {0x10,0x10,0x10,0x10,0x10,0x10,0x10,0x0};
   uint8_t leftCenterBar[8] = {0x8,0x8,0x8,0x8,0x8,0x8,0x8,0x0};
@@ -199,8 +269,7 @@ int main(void)
   uint8_t rightBar[8] = {0x1,0x1,0x1,0x1,0x1,0x1,0x1,0x0};
   uint8_t center[8] = {0xa,0x0,0x0,0x0,0x0,0x0,0xa,0x0};
 
-
-  // Local variables
+  // Character arrays for output
   char height_string[10]; // Buffer for height UART output
   char angle_string[10];
   // char string[8];
@@ -215,7 +284,7 @@ int main(void)
   uart_init(UART_BAUD_SELECT(115200, F_CPU));
   uart_puts("\r\nUART at 115200 Bd.\r\n");
 
-  sei();
+  sei(); // Enable interrupts
 
   // Initialize display
   lcd_init(LCD_DISP_ON);
@@ -231,7 +300,7 @@ int main(void)
   // Initialize TWI
   twi_init(); 
 
-    // Initialize MPU6050
+  // Initialize MPU6050
   twi_set_pins(MPU6050_SDA_PIN, MPU6050_SCL_PIN);
   mpu6050_init();
 
@@ -275,8 +344,8 @@ int main(void)
   lcd_putc(4);
   lcd_puts("   I -00,0");
   lcd_putc(0xDF);
-  // lcd_gotoxy(0,1);
-  // lcd_puts("          -00,0m");
+  lcd_gotoxy(10,1);
+  lcd_puts("-00,0m");
   // uart_puts("Main scr.\r\n");
 
   lcd_gotoxy(0,1);
@@ -295,17 +364,18 @@ int main(void)
     handle_button_bme();     
     handle_laser_timeout();
 
-    if (updateHeight == 1){
-    // Convert height to string and send to UART
+    if (updateHeightFlag == 1){
+      updateAngle();
+      // Convert height to string and send to UART
       dtostrf(heightFloat, 6, 2, height_string);
       uart_puts("Height: ");
       uart_puts(height_string);
-      updateHeight = 0;
+      updateHeightFlag = 0;
       uart_puts("\r\n");
     }
 
-    if(updateAngle == 1) {   
-      updAngle();
+    if(updateAngleFlag == 1) {   
+      updateAngle();
     // Convert angle to string and send to UART
       dtostrf(angleFloat, 6, 1, angle_string); 
       uart_puts("Angle: ");
@@ -326,9 +396,8 @@ int main(void)
     // uart_puts(" | ");
     // uart_puts("\r\n");
 
-        updateAngle = 0;
-      }
-    
+        updateAngleFlag = 0;
+      }    
     }
   return 0;
 } 
@@ -349,7 +418,7 @@ ISR(TIMER1_OVF_vect) {
     angleFloat = calculate_angles();   // Update pitch and roll angles
     // Do this every 50 x 4 ms = 200 ms
     if (n_ovfs >= 50 && angleFloat < 90 && angleFloat > -90) {
-        updateAngle = 1;   //
+        updateAngleFlag = 1;   //
         n_ovfs = 0;        // Reset overflow counter
     }
 
@@ -368,7 +437,7 @@ ISR(TIMER2_OVF_vect) {
     read_bme280();  // Read BME280 data 
     if (overflow_bme >= avr_time) {
         heightFloat = height_print();
-        updateHeight = 1;
+        updateHeightFlag = 1;
         overflow_bme = 0;
     }
 }
