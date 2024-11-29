@@ -113,6 +113,16 @@ When the angle is displayed, the "level" is updated each time the function is ca
 <br><br>
 <img src="/img/lcd_sim.gif" alt="LCD display simulation" style="width: 500px; margin-left 20px;">
 
+### Results from Real-Time Sensor Data Visualization
+
+![Visualization](visualization.png)
+MPU6050 (blue line): Represents the angular tilt (in degrees) measured by the gyroscope and accelerometer.
+BME280 (red line): Represents the height (in meters) calculated using atmospheric pressure readings.
+
+
+
+
+
 <h2>Instructions</h2>
 
 
