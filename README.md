@@ -32,6 +32,7 @@ The main microcontroller used to read sensor data, process it, and control the o
 2. MPU6050 (Inclinometer)<br>
 A 6-axis motion tracking device with a gyroscope and accelerometer.
 Measures acceleration (in 3 axes) and angular velocity (gyroscope data) to track motion and orientation. <br>
+[MPU6050 Manual](https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Register-Map1.pdf).
 
 3. BMP280 (Height Sensor)<br>
 Detects the elevation above the ground to ensure the line array is lifted to the correct height.<br>
