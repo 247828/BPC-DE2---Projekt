@@ -94,7 +94,7 @@ The calibration process averages multiple readings to calculate gyroscope offset
 #### Gyroscope-Based Angle Calculation:
 Using the corrected gyroscope data, the pitch and roll angles are updated by integrating the angular velocity over time (angle += gyro_value * time_interval), where time_interval corresponds to the overflow period configured by the timer in main.c. 
 
-$$\varphi = \varphi_0 + \omega \cdot t$$
+\varphi = \varphi_0 + \omega \cdot t
 
 
 #### Accelerometer-Based Angle Calculation:
