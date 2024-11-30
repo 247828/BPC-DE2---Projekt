@@ -91,7 +91,9 @@ Configures the accelerometer for a sensitivity range of ±8g, and the gyroscope 
 The data reading function communicates with the sensor over I2C to read raw accelerometer and gyroscope data from memory registers, which are then converted to physical units (g for acceleration and °/s for angular velocity). 
 
 The calibration process averages multiple readings to calculate gyroscope offsets, eliminating bias in measurements. 
-#### Gyroscope-Based Angle Calculation: ![Formula](https://latex.codecogs.com/svg.image?\huge%20\varphi(t)=\varphi_0+\int_0^t\omega(\tau)\%20d\tau=\varphi_0+\omega\cdot%20t)
+#### Gyroscope-Based Angle Calculation: 
+
+![Formula](https://latex.codecogs.com/svg.image?\huge%20\varphi(t)=\varphi_0+\int_0^t\omega(\tau)\%20d\tau=\varphi_0+\omega\cdot%20t)
 
 Using the corrected gyroscope data, the pitch and roll angles are updated by integrating the angular velocity over time (angle += gyro_value * time_interval), where time_interval corresponds to the overflow period configured by the timer in main.c. 
 
