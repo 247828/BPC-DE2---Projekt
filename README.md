@@ -162,6 +162,7 @@ When the angle is displayed, the "level" is updated each time the function is ca
   <li>Materials from school course BPC-DE2: <i><a href="https://github.com/tomas-fryza/avr-course/tree/master/lab4-lcd">Lab 4: LCD (Liquid crystal display)</a></i>; <i><a href="https://github.com/tomas-fryza/avr-course/tree/master/lab6-i2c">Lab 6: I2C (Inter-Integrated Circuits)</a></i>(Tomáš Frýza)</li>
   <li>AVR-GCC libraries <i>LCD library for HD44780 based LCD's</i> and <i>UART library</i>, (<a href="http://www.peterfleury.epizy.com/avr-software.html?i=1">web</a>) (©2019, Peter Fleury)</li>
   <li> Cirkit Designer (https://app.cirkitdesigner.com/)</li>
+  <li> Equation Editor (https://editor.codecogs.com/)</li>
   <li>Custom libraries <i>MPU6050.h</i> and <i>BME280.h</i></li>
     <!--
   <li>Název dalších položek, popř. <a href="about:blank">link</a>...</li>
