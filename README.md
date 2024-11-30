@@ -111,7 +111,9 @@ During initialization, the sensor must be calibrated using values stored in the 
 <br><br>
 The sensor library also includes a function for operating a button, which allows obtaining reference values for calculating the altitude difference.
 <br><br>
-The sensor itself has an integrated filter that smooths the measured values.
+The sensor itself has an integrated filter that smooths the measured values. In our case we have have filter set off. 
+
+### BME280 filter mode
 <img src="/img/bme280_filter.jpg" alt="BME280 filter" style="width: 500px; margin-left 20px;">
 
 ### Results from Real-Time Sensor Data Visualization
@@ -119,6 +121,8 @@ The sensor itself has an integrated filter that smooths the measured values.
 MPU6050 (blue line): Represents the angular tilt (in degrees) measured by the gyroscope and accelerometer.
 
 BME280 (red line): Represents the height (in meters) calculated using atmospheric pressure readings.
+
+Due to the constantly changing environment, we cannot calculate a stable and accurate height difference, even though we are using the average value of 250 samples.
 
 <h3>Showing measurments to LCD display</h3>
 In this project, the HD44780 based 16x2 LCD screen is used. The first line displays the angle value between -90 and 90 degrees with a graphical representation resembling a spirit level. The second line displays the height value between -99.9 and 99.9 m. Two functions are created to display the new value - one to display the new angle and one to display the new height.
