@@ -113,10 +113,10 @@ The sensor library also includes a function for operating a button, which allows
 <br><br>
 The sensor itself has an integrated filter that smooths the measured values. In our case we have have filter set off. 
 
-### BME280 filter mode
+#### BME280 filter mode
 <img src="/img/bme280_filter.jpg" alt="BME280 filter" style="width: 500px; margin-left 20px;">
 
-### Results from Real-Time Sensor Data Visualization
+### Sensor Data Visualization
 <img src="visualization.png" alt="Visualization" width="600" height="400">
 MPU6050 (blue line): Represents the angular tilt (in degrees) measured by the gyroscope and accelerometer.
 
