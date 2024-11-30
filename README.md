@@ -100,7 +100,9 @@ Using the corrected gyroscope data, the pitch and roll angles are updated by int
 
 
 #### Accelerometer-Based Angle Calculation:
-The total acceleration vector is calculated as the magnitude of the accelerometer values in the X, Y, and Z axes. This is done to normalize the accelerometer data. Pitch and roll angles are calculated using trigonometric functions (atan2). These angles represent the sensor's orientation with respect to gravity.
+![Formula](https://latex.codecogs.com/svg.image?\huge%20\varphi_x=\arctan\left(\frac{a_y}{a_z}\right)\cdot\frac{180}{\pi})
+
+Pitch and roll angles are calculated using trigonometric functions (atan2). These angles represent the sensor's orientation with respect to gravity.
 
 A complementary filter combines the angles calculated from the gyroscope and accelerometer:
 - The gyroscope angle provides smooth and stable data over time but can accumulate drift.
