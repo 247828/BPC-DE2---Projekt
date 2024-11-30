@@ -105,12 +105,20 @@ The filter weights the gyroscope angle (96%) and the accelerometer angle (4%) to
 
 ### BME280
 
+The BME280 sensor used in the project is employed to calculate the altitude difference between a reference altitude value and the current position of the device based on pressure and temperature readings.
+<br><br>
+During initialization, the sensor must be calibrated using values stored in the sensor's memory. After storing these constants in variables named dig_T1 to dig_P9, the raw data obtained from the sensor is recalculated using these calibration constants based on the code provided in the manufacturer's datasheet. Separate conversion code is available for both temperature and pressure to obtain real values. Using the temperature and pressure values, an adjusted barometric formula is applied to calculate the altitude difference. This value is then passed as a float for further processing.
+<br><br>
+The sensor library also includes a function for operating a button, which allows obtaining reference values for calculating the altitude difference.
+<br><br>
+The sensor itself has an integrated filter that smooths the measured values.
+<img src="/img/bme280_filter" alt="LCD display simulation" style="width: 500px; margin-left 20px;">
+
 ### Results from Real-Time Sensor Data Visualization
 <img src="visualization.png" alt="Visualization" width="600" height="400">
 MPU6050 (blue line): Represents the angular tilt (in degrees) measured by the gyroscope and accelerometer.
 
 BME280 (red line): Represents the height (in meters) calculated using atmospheric pressure readings.
-
 
 <h3>Showing measurments to LCD display</h3>
 In this project, the HD44780 based 16x2 LCD screen is used. The first line displays the angle value between -90 and 90 degrees with a graphical representation resembling a spirit level. The second line displays the height value between -99.9 and 99.9 m. Two functions are created to display the new value - one to display the new angle and one to display the new height.
