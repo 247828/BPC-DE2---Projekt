@@ -112,7 +112,7 @@ During initialization, the sensor must be calibrated using values stored in the 
 The sensor library also includes a function for operating a button, which allows obtaining reference values for calculating the altitude difference.
 <br><br>
 The sensor itself has an integrated filter that smooths the measured values.
-<img src="/img/bme280_filter" alt="BME280 filter" style="width: 500px; margin-left 20px;">
+<img src="/img/bme280_filter.jpg" alt="BME280 filter" style="width: 500px; margin-left 20px;">
 
 ### Results from Real-Time Sensor Data Visualization
 <img src="visualization.png" alt="Visualization" width="600" height="400">
