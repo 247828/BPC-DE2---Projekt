@@ -93,7 +93,7 @@ The data reading function communicates with the sensor over I2C to read raw acce
 The calibration process averages multiple readings to calculate gyroscope offsets, eliminating bias in measurements. 
 #### Gyroscope-Based Angle Calculation: 
 
-![Formula](https://latex.codecogs.com/svg.image?\huge%20\varphi(t)=\varphi_0+\int_0^t\omega(\tau)\%20d\tau=\varphi_0+\omega\cdot%20t)
+![Formula](https://latex.codecogs.com/svg.image?\huge%20\varphi_x=\varphi_0+\int_0^t\omega(\tau)\%20d\tau=\varphi_0+\omega\cdot%20t)
 
 Using the corrected gyroscope data, the pitch and roll angles are updated by integrating the angular velocity over time (angle += gyro_value * time_interval), where time_interval corresponds to the overflow period configured by the timer in main.c. 
 
@@ -108,7 +108,9 @@ A complementary filter combines the angles calculated from the gyroscope and acc
 - The gyroscope angle provides smooth and stable data over time but can accumulate drift.
 - The accelerometer angle provides an absolute reference but is sensitive to vibrations and sudden movements.
   
-The filter weights the gyroscope angle (96%) and the accelerometer angle (4%) to achieve a balance between stability and accuracy. 
+The filter weights the gyroscope angle (96%) and the accelerometer angle (4%) to achieve a balance between stability and accuracy.
+
+![Formula](https://latex.codecogs.com/svg.image?%5Chuge%20%5Cvarphi=%5Cvarphi_%7B%5Ctext%7Bgyro%7D%7D%5Ccdot%200.96&plus;%5Cvarphi_%7B%5Ctext%7Bacc%7D%7D%5Ccdot%200.04%20)
 
 ### BME280
 
