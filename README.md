@@ -52,7 +52,7 @@ Registers Used
 
 [MPU6050 Manual](https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Register-Map1.pdf).
 
-### 3. BMP280 (Height Sensor)<br>
+### 3. BME280 (Height Sensor)<br>
 Detects the elevation above the ground to ensure the line array is lifted to the correct height.<br>
 
 ### 4. Laser Module<br>
