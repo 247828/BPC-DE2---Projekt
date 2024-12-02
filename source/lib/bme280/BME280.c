@@ -11,12 +11,16 @@ int16_t dig_T2, dig_T3;
 int16_t dig_P2, dig_P3, dig_P4, dig_P5, dig_P6, dig_P7, dig_P8, dig_P9;
 int32_t t_fine;  // Variable for fine temperature adjustment
 
+uint8_t last_button_state = 1; // Assume the button is initialized as not pressed (HIGH)
+uint8_t debounce_time = 50;
+
 // Global variables for sensor data and calculations
-volatile uint8_t last_button_state_bme = 1;
-volatile float pressure1 = 0.0;        // Reference pressure when button is pressed
+volatile uint8_t last_button_state = 1;
+volatile float pressure1 = 0.0;        // Reference pressure when the button is pressed
 volatile float pressure = 0.0;         // Current pressure reading
 volatile float temperature = 0.0;      // Current temperature reading
-volatile float height_bme = 0.0;           // Calculated height difference
+volatile float height = 0.0;           // Calculated height difference
+volatile float height_bme = 0.0;  
 volatile uint8_t flag_update_uart = 0; // Flag to indicate UART update
 volatile uint8_t bme_values[3];        // Array to store raw sensor data
 volatile uint32_t raw_temp = 0, raw_press = 0; // Raw temperature and pressure values
@@ -27,7 +31,7 @@ uint32_t press_high, press_mid, press_low;
 int32_t bme_rep1, bme_rep2, bme_rep3;
 
 // Variables for averaging calculations
-// volatile uint8_t updateHeight = 0;
+volatile uint8_t updateHeight = 0;
 volatile float pressure_sum = 0.0;
 volatile float temperature_sum = 0.0;
 volatile uint8_t pressure_count = 0;
@@ -43,19 +47,13 @@ void configure_bme280(void) {
     twi_write(0b10110111); // Set oversampling and mode settings
     twi_stop(); // Stop I2C communication
 
-    uint8_t config_value = (0 << 4) | (0 << 0); // Filter and standby time configuration
+    uint8_t config_value = (0 << 5) | (5 << 2); // Filter and standby time configuration
     twi_start(); // Start I2C communication
     twi_write((BME_slave << 1) | TWI_WRITE); // Address BME280 with write operation
     twi_write(BME_CONFIG); // Write to configuration register
     twi_write(config_value); // Write configuration settings
     twi_stop(); // Stop I2C communication
 }
-
-void read_bme280(void) {
-    twi_set_pins(BME280_SDA_PIN, BME280_SCL_PIN); // Přepnout na piny pro BME280
-    bme280_read_data();                          // Číst data z BME280
-}
-
 
 // Load temperature calibration constants from BME280
 void load_temp_calibration_data(void) {
@@ -84,8 +82,6 @@ void load_press_calibration_data(void) {
     dig_P8 = (calib_data[15] << 8) | calib_data[14];
     dig_P9 = (calib_data[17] << 8) | calib_data[16];
 }
-
-// Reading data from the sensor
 
 // Temperature calculation using calibration data
 float calculate_temperature(int32_t raw_tempc) {
@@ -187,33 +183,40 @@ float calculate_height_difference(float pressure1, float pressure2, float temper
     float temp_kelvin = temperature + T0;
     // Calculate height difference using the barometric formula
     // float height = 44330 * (1 - pow((pressure2 / pressure1), (1 / 5.255)));
-    float height = ((R*temp_kelvin)/(g*M)) * log(pressure1/pressure2); 
+    float height = ((R*temp_kelvin)/(g*M)) * ln(pressure1/pressure2); 
     
-    return height;  // Return height in meters
+    return height;
 }
 
 // Handle button press events
-void handle_button_bme(void) {
-    uint8_t current_state = GPIO_read(&PIND, BUTTON2_PIN); // Read the current state of the button
+void handle_button(void) {
+    uint8_t current_state = GPIO_read(&PIND, BUTTON_PIN); // Read the current button state
 
-    // Detect button press (falling edge detection)
-    if (current_state == 0 && last_button_state_bme == 1) {
-        // Save the current pressure as reference pressure when button is pressed
-        _delay_ms(100); // Debounce delay
-        uart_puts("Height Reset.\r\n");          // Debug message
-        
-        pressure1 = pressure;  // Save current pressure to pressure1
+    // Detect button state change
+    if (current_state != last_button_state) {
+        _delay_ms(debounce_time); // Wait for debounce time
 
-        // Reset height to 0 (optional)
-        height_bme = 0.0;          // Reset current height
+        // Check if the button is still in the same state
+        if (GPIO_read(&PIND, BUTTON_PIN) == current_state) {
+            // Save the new state
+            last_button_state = current_state;
+
+            // If the button was pressed (falling edge detection)
+            if (current_state == 0) {
+                uart_puts("Button ON\r\n"); // Debug message
+
+                // Save the current pressure as reference
+                pressure1 = pressure;
+
+                // Reset height to 0 (optional)
+                height = 0.0; 
+            }
+        }
     }
-
-    // Save the current state for the next comparison
-    last_button_state_bme = current_state;
 }
 
 // Calculate and update height difference
-float height_print(void){
+float hieght_print(void){
     height_bme = calculate_height_difference(pressure1, pressure, temperature); // Update height calculation
     return height_bme;
 }
