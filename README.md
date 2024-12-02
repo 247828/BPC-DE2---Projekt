@@ -147,10 +147,10 @@ Before starting measurements, the sensor configuration (configure_bme280) involv
 
 - Oversampling settings determine how many values will be averaged before being sent to the computation functions. This reduces noise levels in the measured data (see the table).
   <br><br>
-  |         **Typical RMS noise in pressure (Pa) at 25 C°**           | 
+|           **Typical RMS noise in pressure (Pa) at 25 C°**           | 
 |---------------------------------------------------------------------|
 | Pressure / temperature |           IIR filter coefficient           | 
-  oversampling settings  |   off  |   2    |   4    |   8    |   16   |                      
+|  oversampling settings |   off  |   2    |   4    |   8    |   16   |                      
 | *1/ *1                 | 3.3    | 1.9    | 1.2    | 0.9    | 0.4    | 
 | *2/ *1                 | 2.6    | 1.5    | 1.0    | 0.6    | 0.4    | 
 | *4/ *1                 | 2.1    | 1.2    | 0.8    | 0.5    | 0.3    | 
