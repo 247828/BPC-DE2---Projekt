@@ -20,7 +20,9 @@ Jakub Kováč (LCD display, documentation)<br>
     The inclinometer measures the angle of the line array with an accuracy of 0.1 degrees, ensuring it is perfectly aligned. A height sensor calculates how high the line array needs to be lifted to achieve the best sound coverage. To help with horizontal alignment, a laser projects a visible beam to guide the positioning. All the important information, including the tilt angle and height, is shown on a display in real time.
   </p>
   <img src="/img/linearray.jpg" alt="Line Array" style="width: 500px; margin-left 20px;">
-</div>
+
+This project draws inspiration from the [teqsas LAP-TEQ Plus](https://www.promusic.cz/teqsas-lap-teq-plus-clinometer-1109), a professional audio measurement and alignment tool.</div>
+
 
 <h2>Hardware components</h2>
 
