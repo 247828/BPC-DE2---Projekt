@@ -45,7 +45,7 @@ void configure_bme280(void) {
     twi_write(0b10110111); // Set oversampling and mode settings
     twi_stop(); // Stop I2C communication
 
-    uint8_t config_value = (0 << 4) | (0 << 0); // Filter and standby time configuration
+    uint8_t config_value = (0 << 5) | (5 << 2); // Filter and standby time configuration
     twi_start(); // Start I2C communication
     twi_write((BME_slave << 1) | TWI_WRITE); // Address BME280 with write operation
     twi_write(BME_CONFIG); // Write to configuration register
@@ -182,7 +182,6 @@ void bme280_read_data(void) {
 float calculate_height_difference(float pressure1, float pressure2, float temperature) {
     float R = 8.314;
     float T0 = 273.15;
-    float L = 0.00649;
     float g = 9.80665;
     float M = 0.0289644;
 
@@ -225,5 +224,4 @@ float height_print(void){
     height_bme = calculate_height_difference(pressure1, pressure, temperature); // Update height calculation
     return height_bme;
 }
-
 
