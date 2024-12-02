@@ -162,62 +162,36 @@ In this project, the HD44780 based 16x2 LCD screen is used. The first line displ
 <br><br>
 The numeric data is converted from a float to three integer values representing the integer part, the decimal part and the sign before displaying. It is then evaluated whether it is a positive or negative number and then whether the integer part is a two-digit or a single-digit number. The number is then displayed on the screen.
 <br><br>
-When the angle is displayed, the "level" is updated each time the function is called.  7 character fields have been reserved for the level display. Since the character field is 5 pixels wide, the range of -90 to 90 degrees can be represented with a step of 6 degrees. 4 custom characters (vertical bars) were created so that the position can be displayed across the entire width of the character. The display algorithm consists of calculating the position of the character according to the sign and then selecting one of the five vertical bar characters according to the interval into which the angle falls.
+When the angle is displayed, the "level" is updated each time the function is called. 7 character fields have been reserved for the level display. Since the character field is 5 pixels wide, the range of -90 to 90 degrees can be represented with a step of 6 degrees. 4 custom characters (vertical bars) were created so that the position can be displayed across the entire width of the character. The display algorithm consists of calculating the position of the character according to the sign and then selecting one of the five vertical bar characters according to the interval into which the angle falls.
 <br><br>
 <img src="/img/lcd_sim.gif" alt="LCD display simulation" style="width: 500px; margin-left 20px;">
 
-
-
 <h2>Instructions</h2>
 
+After switching on, the automatic calibration starts and the user waits for it to complete, which is indicated by the message "Done". The main screen is then displayed, showing an angle measurement in degrees (numerical and graphical representation), a height measurement in meters and a laser status (ON/OFF). The angle is automatically updated every 200 miliseconds and the height is automatically updated every 800 miliseconds. Pressing the Laser ON/OFF button turns the laser on and pressing it again turns it off. Once switched on, the laser will automatically switch off after a time interval of 10 seconds. The Reset Height button sets the reference level from which the height is measured. If required, the current angle and height measurements are sent to the serial output via UART.
 
+<!--
+  <br><br>
+  link na video...
+-->
 
 <h2>Sources and references</h2>
 <ol>
   <li>Microcontroller ATmega328P (<a href="https://www.microchip.com/en-us/product/ATmega328P">documentation</a>) on board Arduino UNO</li>
   <li>Gyroscope and accelerometer module MPU6050 for Arduino (<a href="https://invensense.tdk.com/wp-content/uploads/2015/02/MPU-6000-Datasheet1.pdf">sensor documentation</a>)</li>
-  <li> Build a Digital Level with MPU-6050 and Arduino (https://dronebotworkshop.com/mpu-6050-level/) </li>
-  <li> 4 | How to use the MPU6050 with Arduino and Teensy (https://www.youtube.com/watch?v=yhz3bRQLvBY) </li>
-  <li> I2C Addresses and Troublesome Chips (https://learn.adafruit.com/i2c-addresses/the-list)</li>
-  <li> Build an Electronic Level with MPU-6050 and Arduino (https://www.youtube.com/watch?v=XCyRXMvVSCw)</li>
-  
+  <li>Build a Digital Level with MPU-6050 and Arduino (<a href="https://dronebotworkshop.com/mpu-6050-level/">web</a>)</li>
+  <li>4 | How to use the MPU6050 with Arduino and Teensy (<a href="https://www.youtube.com/watch?v=yhz3bRQLvBY">video</a>) </li>
+  <li>I2C Addresses and Troublesome Chips (<a href="https://learn.adafruit.com/i2c-addresses/the-list">web</a>)</li>
+  <li>Build an Electronic Level with MPU-6050 and Arduino (<a href="https://www.youtube.com/watch?v=XCyRXMvVSCw">video</a>)</li>
   <li>Humidity sensor BME280 module for Arduino (<a href="https://www.bosch-sensortec.com/products/environmental-sensors/humidity-sensors-bme280/">sensor documentation</a>)</li>
   <li>LCD display module 16x2 (HD44780) for Arduino</li>
-  <li>Materials from school course BPC-DE2: <i><a href="https://github.com/tomas-fryza/avr-course/tree/master/lab4-lcd">Lab 4: LCD (Liquid crystal display)</a></i>; <i><a href="https://github.com/tomas-fryza/avr-course/tree/master/lab6-i2c">Lab 6: I2C (Inter-Integrated Circuits)</a></i>(Tomáš Frýza)</li>
-  <li>AVR-GCC libraries <i>LCD library for HD44780 based LCD's</i> and <i>UART library</i>, (<a href="http://www.peterfleury.epizy.com/avr-software.html?i=1">web</a>) (©2019, Peter Fleury)</li>
-  <li> Cirkit Designer (https://app.cirkitdesigner.com/)</li>
-  <li> Equation Editor (https://editor.codecogs.com/)</li>
+  <li>Materials from school course BPC-DE2: <i><a href="https://github.com/tomas-fryza/avr-course/tree/master/lab4-lcd">Lab 4: LCD (Liquid crystal display)</a></i>; <i><a href="https://github.com/tomas-fryza/avr-course/tree/master/lab6-i2c">Lab 6: I2C (Inter-Integrated Circuits)</a></i> (Tomáš Frýza)</li>
+  <li>AVR-GCC libraries <i>LCD library for HD44780 based LCD's</i> and <i>UART library</i>. (<a href="http://www.peterfleury.epizy.com/avr-software.html?i=1">web</a>) (©2019, Peter Fleury)</li>
+  <li>Cirkit Designer (<a href="https://app.cirkitdesigner.com/">web</a>)</li>
+  <li>Equation Editor (<a href="https://editor.codecogs.com/">web</a>)</li>
+  <li>ScreenToGif (<a href="https://www.screentogif.com/">web</a>)</li>
   <li>Custom libraries <i>MPU6050.h</i> and <i>BME280.h</i></li>
     <!--
   <li>Název dalších položek, popř. <a href="about:blank">link</a>...</li>
     -->
 </ol> 
-
-<!-- <h1>Název projektu</h1>
-<i>Vysoké učení technické v Brně, Fakulta elektrotechniky a komunikačních technologií, zimní semestr 2024/2025</i>
-<h2>Členové týmu</h2>
-
-Artur Nizamutdinov (nápad...)<br>
-Nikita Kolobov (...)<br>
-Jan Božejovský (Barometr, jazyková korektura dokumentace...)<br>
-Jakub Kováč (LCD displej, dokumentace...)<br>
-
-<h2>Teoretický popis, vysvětlení</h2>
-
-<h2>Popis hardwaru</h2>
-
-<h2>Popis softwarového řešení</h2>
-
-<h2>Instrukce</h2>
-
-<h2>Zdroje a reference</h2>
-<ol>
-  <li>Mikrokontrolér ATmega328P (<a href="https://www.microchip.com/en-us/product/ATmega328P">dokumentace</a>) na desce Arduino UNO</li>
-  <li>Modul gyroskopu a akcelerometru MPU6050 pro Arduino (<a href="https://components101.com/sensors/mpu6050-module">web</a>)</li>
-  <li>Modul 16x2 LCD displej (HD44780) pro Arduino</li>
-  <li>Materiály z cvičení <a href="https://github.com/tomas-fryza/avr-course/tree/master/lab4-lcd">Lab 4: LCD (Liquid crystal display)</a> (Tomáš Frýza)</li>
-  <li>Knihovna <i>LCD library for HD44780 based LCD's</i>, (<a href="http://www.peterfleury.epizy.com/avr-software.html?i=1">web</a>) (©2019, Peter Fleury)</li>
-  <li>Název dalších položek, popř. <a href="about:blank">link</a>...</li>
- 
-</ol>
--->
