@@ -134,9 +134,6 @@ Where:
 - **T0 = 273.15**  
    Absolute zero, used to convert temperatures to Kelvin.
 
-- **L = 0.00649**  
-   Average vertical temperature gradient in the atmosphere, expressed in K / m.
-
 - **g = 9.80665**  
    Acceleration due to gravity, expressed in m / s².
 
@@ -146,7 +143,24 @@ Where:
   - **(p1, p2)**
     Atmospheric pressures at two different heights.
 <br><br>
-The sensor itself has an integrated filter that smooths the measured values. In our case we have have filter set off. 
+Before starting measurements, the sensor configuration (configure_bme280) involves setting the following parameters:
+
+- Oversampling settings determine how many values will be averaged before being sent to the computation functions. This reduces noise levels in the measured data (see the table).
+  <br><br>
+  |         **Typical RMS noise in pressure (Pa) at 25 C°**           | 
+|---------------------------------------------------------------------|
+| Pressure / temperature |           IIR filter coefficient           | 
+  oversampling settings  |   off  |   2    |   4    |   8    |   16   |                      
+| *1/ *1                 | 3.3    | 1.9    | 1.2    | 0.9    | 0.4    | 
+| *2/ *1                 | 2.6    | 1.5    | 1.0    | 0.6    | 0.4    | 
+| *4/ *1                 | 2.1    | 1.2    | 0.8    | 0.5    | 0.3    | 
+| *8/ *1                 | 1.6    | 1.0    | 0.6    | 0.4    | 0.2    | 
+| *16/ *2                | 1.3    | 0.8    | 0.5    | 0.4    | 0.2    | 
+
+  <br><br>
+- Mode settings ensure the sensor exits sleep mode and starts performing measurements and sending data.
+- Standby time settings specify how frequently measurement cycles should occur in the sensor.
+- Filter settings control the extent to which unwanted sudden changes in pressure and temperature are suppressed. In our case we have filter coefficient  set to 16.
 
 #### BME280 filter mode
 <img src="/img/bme280_filter.jpg" alt="BME280 filter" style="width: 500px; margin-left 20px;">
