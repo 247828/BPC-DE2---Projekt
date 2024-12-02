@@ -139,6 +139,17 @@ In this project, the HD44780 based 16x2 LCD screen is used. The first line displ
 <br><br>
 The numeric data is converted from a float to three integer values representing the integer part, the decimal part and the sign before displaying. It is then evaluated whether it is a positive or negative number and then whether the integer part is a two-digit or a single-digit number. The number is then displayed on the screen.
 <br><br>
+To calculate the height difference from the difference in atmospheric pressures, the following formula is used:
+
+$$h = \frac{R \cdot T}{g \cdot M} \cdot \ln{\frac{p_1}{p_2}}$$
+
+Where:
+- \(R\): Universal gas constant \((8.314 \, \text{J/mol·K})\),
+- \(T\): Temperature in Kelvin,
+- \(g\): Acceleration due to gravity \((9.80665 \, \text{m/s}^2)\),
+- \(M\): Molar mass of air \((0.0289644 \, \text{kg/mol})\),
+- \(p_1, p_2\): Atmospheric pressures at two different heights.
+<br><br>
 When the angle is displayed, the "level" is updated each time the function is called.  7 character fields have been reserved for the level display. Since the character field is 5 pixels wide, the range of -90 to 90 degrees can be represented with a step of 6 degrees. 4 custom characters (vertical bars) were created so that the position can be displayed across the entire width of the character. The display algorithm consists of calculating the position of the character according to the sign and then selecting one of the five vertical bar characters according to the interval into which the angle falls.
 <br><br>
 <img src="/img/lcd_sim.gif" alt="LCD display simulation" style="width: 500px; margin-left 20px;">
