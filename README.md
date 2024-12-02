@@ -126,11 +126,20 @@ To calculate the height difference from the difference in atmospheric pressures,
 $$h = \frac{R \cdot T}{g \cdot M} \cdot \ln{\frac{p_1}{p_2}}$$
 
 Where:
-- \(R\): Universal gas constant \(8.314 \, (J/mol·K)),
-- \(T\): Temperature in Kelvin,
-- \(g\): Acceleration due to gravity \(9.80665 \, (m/s)^2),
-- \(M\): Molar mass of air \(0.0289644 \, (kg/mol)),
-- \(p1, p2\): Atmospheric pressures at two different heights.
+- **R = 8.314**  
+   Universal gas constant, expressed in J / (mol·K).
+
+- **T0 = 273.15**  
+   Absolute zero, used to convert temperatures to Kelvin.
+
+- **L = 0.00649**  
+   Average vertical temperature gradient in the atmosphere, expressed in K / m.
+
+- **g = 9.80665**  
+   Acceleration due to gravity, expressed in m / s².
+
+- **M = 0.0289644**  
+   Molar mass of air (average), expressed in kg / mol.
 <br><br>
 The sensor itself has an integrated filter that smooths the measured values. In our case we have have filter set off. 
 
