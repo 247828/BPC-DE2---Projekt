@@ -55,8 +55,8 @@ Registers Used
 ### 3. BME280 (Height Sensor)<br>
 Detects the elevation above the ground to ensure the line array is lifted to the correct height.<br>
 
-### 4. Laser Module<br>
-Projects a visible beam to indicate the direction for precise horizontal alignment.<br>
+### 4. Laser Module KY-008<br>
+Projects a visible beam to indicate the direction for precise horizontal alignment. The laser module is connected to a GPIO pin on the microcontroller.<br>
 
 ### 5. Display Module<br>
 Shows angle (with graphical representation) and height measurments and laser status.<br>
@@ -157,6 +157,11 @@ BME280 (red line): Represents the height (in meters) calculated using atmospheri
 
 Due to the constantly changing environment, we cannot calculate a stable and accurate height difference, even though we are using the average value of 250 samples.
 
+### Laser Module KY-008
+
+The software controls the laser module by monitoring the state of a push button, allowing the user to toggle the laser ON or OFF. A timeout mechanism ensures that the laser automatically turns off after a predefined period, with the timeout timer resetting each time the laser is activated.
+The laser's status is displayed on an LCD screen.
+
 <h3>Showing measurments to LCD display</h3>
 In this project, the HD44780 based 16x2 LCD screen is used. The first line displays the angle value between -90 and 90 degrees with a graphical representation resembling a spirit level. The second line displays the height value between -99.9 and 99.9 m. Two functions are created to display the new value - one to display the new angle and one to display the new height.
 <br><br>
@@ -169,6 +174,8 @@ When the angle is displayed, the "level" is updated each time the function is ca
 <h2>Instructions</h2>
 
 After switching on, the automatic calibration of gyroscope starts and the user waits for it to complete, which is indicated by the message "Done". The main screen is then displayed, showing an angle measurement in degrees (numerical and graphical representation), a height measurement in meters and a laser status (ON/OFF). The angle is automatically updated every 200 miliseconds and the height is automatically updated every 800 miliseconds. Pressing the Laser ON/OFF button turns the laser on and pressing it again turns it off. Once switched on, the laser will automatically switch off after a time interval of 10 seconds. The Reset Height button sets the reference level from which the height is measured. If required, the current angle and height measurements are sent to the serial output via UART.
+
+
 
 <!--
   <br><br>
