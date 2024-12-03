@@ -152,7 +152,7 @@ Before starting measurements, the sensor configuration (configure_bme280) involv
 <br><br>
 
 #### BME280 
-<img src="/img/BME_filter.png" alt="BME280" style="width: 500px; margin-left 20px;">
+<img src="/img/BME_filter.PNG" alt="BME280" style="width: 500px; margin-left 20px;">
 
 <br><br>
 
