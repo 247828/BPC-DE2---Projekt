@@ -122,7 +122,6 @@ The BME280 sensor used in the project is employed to calculate the altitude diff
 During initialization, the sensor must be calibrated using values stored in the sensor's memory. After storing these constants in variables named dig_T1 to dig_P9, the raw data obtained from the sensor is recalculated using these calibration constants based on the code provided in the manufacturer's datasheet. Separate conversion code is available for both temperature and pressure to obtain real values. Using the temperature and pressure values, an adjusted barometric formula is applied to calculate the altitude difference. This value is then passed as a float for further processing.
 <br><br>
 The sensor library also includes a function for operating a button, which allows obtaining reference values for calculating the altitude difference.
-<br><br>
 To calculate the altitude difference from the difference in atmospheric pressures, the following formula is used:
 
 $$h = \frac{R \cdot T}{g \cdot M} \cdot \ln{\frac{p_1}{p_2}}$$
