@@ -140,17 +140,21 @@ Where:
 - **M = 0.0289644**  
    Molar mass of air (average), expressed in kg / mol.
 
-  - **(p1, p2)**
+- **(p1, p2)**
     Atmospheric pressures at two different heights.
 <br><br>
+
 Before starting measurements, the sensor configuration (configure_bme280) involves setting the following parameters:
 
 - Oversampling settings determine how many values will be averaged before being sent to the computation functions. This reduces noise levels in the measured data (see the table).
 - Mode settings ensure the sensor exits sleep mode and starts performing measurements and sending data.
 - Standby time settings specify how frequently measurement cycles should occur in the sensor.
-- Filter settings control the extent to which unwanted sudden changes in pressure and temperature are suppressed. In our case we have filter coefficient  set to 16.
+- Filter settings control the extent to which unwanted sudden changes in pressure and temperature are suppressed. In our case we have filter coefficient  set to 16(see the table).
 <br><br>
-![BME_filter](BME_filter.png)
+
+#### BME280 
+<img src="/img/BME_filter.jpg" alt="BME280" style="width: 500px; margin-left 20px;">
+
 <br><br>
 
 #### BME280 filter mode
