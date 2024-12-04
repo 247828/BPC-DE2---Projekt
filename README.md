@@ -4,7 +4,7 @@
 <i>Brno University of Technology, Faculty of Electrical Engineering and Communication, winter semester 2024/2025</i>
 <h2>Team members</h2>
 
-Artur Nizamutdinov (Idea, documentation...)<br>
+Artur Nizamutdinov (Calculation of angles with MPU6050, laser module control and documentation.)<br>
 Nikita Kolobov (Barometr, ...)<br>
 Jan Božejovský (Barometr, ...)<br>
 Jakub Kováč (LCD display, documentation)<br>
