@@ -108,8 +108,8 @@ Using the corrected gyroscope data, the pitch and roll angles are updated by int
 Pitch and roll angles are calculated using trigonometric functions (atan2). These angles represent the sensor's orientation with respect to gravity.
 
 A complementary filter combines the angles calculated from the gyroscope and accelerometer:
-- The gyroscope angle provides smooth and stable data over time but can accumulate drift.
-- The accelerometer angle provides an absolute reference but is sensitive to vibrations and sudden movements.
+- The gyroscope has long-term drift. Small measurement errors gradually accumulate, leading to inaccurate angle values when used over an extended period.
+- The accelerometer is sensitive to short-term acceleration and vibrations, which cause noise (short-term measurement errors).
   
 The filter weights the gyroscope angle (96%) and the accelerometer angle (4%) to achieve a balance between stability and accuracy.
 
