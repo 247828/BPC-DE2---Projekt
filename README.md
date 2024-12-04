@@ -5,7 +5,7 @@
 <h2>Team members</h2>
 
 Artur Nizamutdinov (Calculation of angles with MPU6050, laser module control and documentation.)<br>
-Nikita Kolobov (Barometr, ...)<br>
+Nikita Kolobov (Calculation of heights with BME280)<br>
 Jan Božejovský (Barometr, ...)<br>
 Jakub Kováč (LCD display, documentation)<br>
 
