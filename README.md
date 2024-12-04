@@ -44,11 +44,11 @@ Registers Used
 - GYRO_XOUT_H (0x43): Starting address for gyroscope data (X, Y, Z).
 
 #### ACCEL_CONFIG Register 0x1C
-![ACCEL_CONFIG](ACCEL_CONFIG.png)
+![ACCEL_CONFIG](/img/ACCEL_CONFIG.png)
 
 
 #### GYRO_CONFIG Register 0x1B
-![GYRO_CONFIG](GYRO_CONFIG.png)
+![GYRO_CONFIG](/img/GYRO_CONFIG.png)
 
 
 
@@ -65,7 +65,7 @@ Shows angle (with graphical representation) and height measurments and laser sta
 
 ### 6. Reset Height and ON/OFF(Laser) buttons <br>
 
-![Circuit Diagram](circuit_image.png)
+![Circuit Diagram](/img/circuit_image.png)
 
 <h2>Software solution</h2>
 
@@ -158,7 +158,7 @@ Before starting measurements, the sensor configuration (configure_bme280) involv
 <img src="/img/bme280_filter.jpg" alt="BME280 filter" style="width: 500px; margin-left 20px;">
 
 ### Sensor Data Visualization
-<img src="visualization.png" alt="Visualization" width="600" height="400">
+</img/ src="visualization.png" alt="Visualization" width="600" height="400">
 MPU6050 (blue line): Represents the angular tilt (in degrees) measured by the gyroscope and accelerometer.
 
 BME280 (red line): Represents the height (in meters) calculated using atmospheric pressure readings.
