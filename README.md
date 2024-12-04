@@ -181,9 +181,7 @@ When the angle is displayed, the "level" is updated each time the function is ca
 
 <h2>Instructions</h2>
 
-After switching on, the automatic calibration of gyroscope starts and the user waits for it to complete, which is indicated by the message "Done". The main screen is then displayed, showing an angle measurement in degrees (numerical and graphical representation), a height measurement in meters and a laser status (ON/OFF). The angle is automatically updated every 200 miliseconds and the height is automatically updated every 800 miliseconds. Pressing the Laser ON/OFF button turns the laser on and pressing it again turns it off. Once switched on, the laser will automatically switch off after a time interval of 10 seconds. The Reset Height button sets the reference level from which the height is measured. If required, the current angle and height measurements are sent to the serial output via UART.
-
-
+After switching on, the automatic calibration of gyroscope starts and the user waits for it to complete, which is indicated by the message "Done". The main screen is then displayed, showing an angle measurement in degrees (numerical and graphical representation), a height measurement in meters and a laser status (ON/OFF). The angle is automatically updated every 200 miliseconds and the height is automatically updated every 800 miliseconds. Pressing the Laser ON/OFF button turns the laser on and pressing it again turns it off. Once switched on, the laser will automatically switch off after a time interval of 10 seconds. The Reset Height button sets the reference level from which the height is measured. 
 
 <!--
   <br><br>
