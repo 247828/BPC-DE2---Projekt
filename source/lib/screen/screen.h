@@ -5,6 +5,7 @@
 */
 
 // Functions declaration
-void lcdInit(void);
-void updateAngle(float angle);
-void updateHeight(float height);
+extern void lcdInit(void);
+extern void updateAngle(float angle);
+extern void updateHeight(float height);
+//extern void updateAngleBar(float angle);

@@ -8,7 +8,7 @@
 #include <math.h>       // C library. fabs()
 #include <stdlib.h>     // C library. Needed for number conversion
 #include <lcd.h>        // Peter Fleury's LCD library
-#include <uart.h>           // Peter Fleury's UART library (for debug messages if needed)
+#include <uart.h>       // Peter Fleury's UART library (for debug messages if needed)
 
 // -- Global variables --
 struct angleStruct {
@@ -57,22 +57,11 @@ void lcdInit(void)
 */
 void updateAngle(float angle) 
 {
-    // Local variables
-    static int8_t barPosition = 0;
-
     // Converting float to decimal parts with sign flag
     if(angle < 0) angleIntegers.aSign = 1; 
     else angleIntegers.aSign = 0;
     angleIntegers.aInt = fabs(angle);
     angleIntegers.aDec = (fabs(angle) - angleIntegers.aInt) * 10;
-    uart_puts("Angle: ");
-    itoa(angleIntegers.aInt, print, 10);
-    uart_puts(print);
-    uart_putc(',');
-    itoa(angleIntegers.aDec, print, 10);
-    uart_puts(print);
-    uart_puts("\r\n");
-
 
     // Writing number to LCD
     if(angleIntegers.aSign == 1) // Negative number
@@ -83,9 +72,13 @@ void updateAngle(float angle)
             lcd_putc('-');
             itoa(angleIntegers.aInt, print, 10);
             lcd_puts(print);
+            lcd_gotoxy(13, 0);
+            lcd_putc(',');
             lcd_gotoxy(14, 0);
             itoa(angleIntegers.aDec, print, 10);
             lcd_puts(print);
+            lcd_gotoxy(15, 0);
+            lcd_putc(0xDF);
         }
         else // greater than or equal to -9
         {
@@ -93,9 +86,13 @@ void updateAngle(float angle)
             lcd_puts(" -");
             itoa(angleIntegers.aInt, print, 10);
             lcd_puts(print);
+            lcd_gotoxy(13, 0);
+            lcd_putc(',');
             lcd_gotoxy(14, 0);
             itoa(angleIntegers.aDec, print, 10);
             lcd_puts(print);
+            lcd_gotoxy(15, 0);
+            lcd_putc(0xDF);
         }
     }
     else // Positive number
@@ -106,9 +103,13 @@ void updateAngle(float angle)
             lcd_putc(' ');
             itoa(angleIntegers.aInt, print, 10);
             lcd_puts(print);
+            lcd_gotoxy(13, 0);
+            lcd_putc(',');
             lcd_gotoxy(14, 0);
             itoa(angleIntegers.aDec, print, 10);
             lcd_puts(print);
+            lcd_gotoxy(15, 0);
+            lcd_putc(0xDF);
         }
         else // less than or equal to 9
         {
@@ -116,20 +117,29 @@ void updateAngle(float angle)
             lcd_puts("  ");
             itoa(angleIntegers.aInt, print, 10);
             lcd_puts(print);
+            lcd_gotoxy(13, 0);
+            lcd_putc(',');
             lcd_gotoxy(14, 0);
             itoa(angleIntegers.aDec, print, 10);
             lcd_puts(print);
+            lcd_gotoxy(15, 0);
+            lcd_putc(0xDF);
         }
     }
-
+}
+/**
+    * Function: updateAngleBar
+    * Purpose:  Updates the screen with new angle graphical represantation.
+    * @param height Value of angle
+    * @return None
+*/
+void updateAngleBar(float angle)
+{
+    // Local variables
+    int8_t barPosition = 0;
     // Calculating bar position and choosing correct character
     if(angleIntegers.aInt >= 6) barPosition = (angleIntegers.aInt-6)/30 + 1;
     else barPosition = 0;
-
-    uart_puts("Bar position: ");
-    itoa(barPosition, print, 10);
-    uart_puts(print);
-    uart_puts("\r\n");
 
     // Clear the bar
     lcd_gotoxy(1, 0);
@@ -150,7 +160,7 @@ void updateAngle(float angle)
 }
 /**
     * Function: updateHeight
-    * Purpose:  Updates the screen with new angle information.
+    * Purpose:  Updates the screen with new height information.
     * @param height Value of height to be written on LCD
     * @return None
 */

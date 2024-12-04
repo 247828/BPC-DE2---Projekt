@@ -69,7 +69,7 @@ void mpu6050_read_data(void) {
 
     // Read accelerometer values and convert to g
     twi_readfrom_mem_into(MPU6050_ADDRESS, ACCEL_XOUT_H, buffer, 6);
-    accel_values[0] = ((float)((buffer[0] << 8) | buffer[1])) / 4096 - 0.07;
+    accel_values[0] = ((float)((buffer[0] << 8) | buffer[1])) / 4096 - 0.03;
     accel_values[1] = ((float)((buffer[2] << 8) | buffer[3])) / 4096 + 0.02;
     accel_values[2] = ((float)((buffer[4] << 8) | buffer[5])) / 4096 + 0.07;
 
@@ -133,6 +133,6 @@ float calculate_angles(void) {
         angle_roll = angle_roll * 0.96 + angle_roll_acc * 0.04;
 
     }
-    return angle_roll;
+    return angle_pitch;
 }
 
