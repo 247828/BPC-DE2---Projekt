@@ -60,4 +60,11 @@ extern volatile float angle_pitch;        /**< @brief Calculated pitch angle */
 extern volatile float angle_roll;         /**< @brief Calculated roll angle */
 /** @} */
 
+/**
+ * @brief Read new data from MPU6050
+ * @return void
+ */
+void read_mpu6050(void);
+
 #endif  // MPU6050_H
+
