@@ -6,8 +6,8 @@
 
 Artur Nizamutdinov (Calculation of angles with MPU6050, laser module control and documentation.)<br>
 Nikita Kolobov (Calculation of heights with BME280)<br>
-Jan Božejovský (Barometr, ...)<br>
-Jakub Kováč (LCD display, documentation)<br>
+Jan Božejovský (Barometer, video and documentation)<br>
+Jakub Kováč (Showing results to LCD screen and documentation)<br>
 
 <h2>Teoretical description, inspiration</h2>
 
@@ -202,7 +202,7 @@ After switching on, the automatic calibration of gyroscope starts and the user w
   <li>Cirkit Designer (<a href="https://app.cirkitdesigner.com/">web</a>)</li>
   <li>Equation Editor (<a href="https://editor.codecogs.com/">web</a>)</li>
   <li>ScreenToGif (<a href="https://www.screentogif.com/">web</a>)</li>
-  <li>Custom libraries <i>MPU6050.h</i> and <i>BME280.h</i></li>
+  <li>Custom librarie: <i>mpu6050</i>, <i>bme280</i>, <i>screen</i> and <i>laser</i></li>
     <!--
   <li>Název dalších položek, popř. <a href="about:blank">link</a>...</li>
     -->
