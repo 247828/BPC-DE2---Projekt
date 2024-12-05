@@ -65,7 +65,7 @@ Shows angle (with graphical representation) and height measurments and laser sta
 
 ### 6. Reset Height and ON/OFF(Laser) buttons <br>
 
-![Circuit Diagram](/img/circuit_image.png)
+
 
 <h2>Software solution</h2> 
 
