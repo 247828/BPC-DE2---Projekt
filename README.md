@@ -67,7 +67,7 @@ Shows angle (with graphical representation) and height measurments and laser sta
 
 ![Circuit Diagram](/img/circuit_image.png)
 
-<h2>Software solution</h2>
+<h2>Software solution</h2> 
 
 ### MPU6050 
 
