@@ -36,20 +36,15 @@ void mpu6050_init(void) {
     twi_write((MPU6050_ADDRESS << 1) | TWI_WRITE);
     twi_write(0x6B); // PWR_MGMT_1 register
     twi_write(0x00); // Wake up MPU6050
-    twi_stop();
 
     // Configure accelerometer to +/-8g
-    twi_start();
-    twi_write((MPU6050_ADDRESS << 1) | TWI_WRITE);
     twi_write(0x1C); // ACCEL_CONFIG register
     twi_write(0x10); // Set sensitivity to +/-8g
-    twi_stop();
 
     // Configure gyroscope to 500°/s
-    twi_start();
-    twi_write((MPU6050_ADDRESS << 1) | TWI_WRITE);
     twi_write(0x1B); // GYRO_CONFIG register
     twi_write(0x08); // Set sensitivity to 500°/s
+    
     twi_stop();
 }
 
