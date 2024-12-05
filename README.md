@@ -202,7 +202,7 @@ After switching on, the automatic calibration of gyroscope starts and the user w
   <li>Cirkit Designer (<a href="https://app.cirkitdesigner.com/">web</a>)</li>
   <li>Equation Editor (<a href="https://editor.codecogs.com/">web</a>)</li>
   <li>ScreenToGif (<a href="https://www.screentogif.com/">web</a>)</li>
-  <li>Custom librarie: <i>mpu6050</i>, <i>bme280</i>, <i>screen</i> and <i>laser</i></li>
+  <li>Custom libraries: <i>mpu6050</i>, <i>bme280</i>, <i>screen</i> and <i>laser</i></li>
     <!--
   <li>Název dalších položek, popř. <a href="about:blank">link</a>...</li>
     -->
