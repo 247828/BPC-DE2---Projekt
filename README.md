@@ -164,6 +164,7 @@ Before starting measurements, the sensor configuration (configure_bme280) involv
 These values are normalized and do not represent the actual physical measurements.
 
 MPU6050 (blue line): Represents the angular tilt values measured by the gyroscope and accelerometer.
+
 BME280 (red line): Represents the height values calculated using atmospheric pressure readings.
 
 Due to the constantly changing environment, we cannot calculate a stable and accurate height difference, even though we are using the average value of 250 samples.
